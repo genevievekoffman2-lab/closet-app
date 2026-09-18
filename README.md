@@ -1,75 +1,15 @@
-# React + TypeScript + Vite
+Problem Statement: 
+- Deciding what to wear every morning is a small but real source of stress and looking good tends to set a confident tone for the day. This app removes that decision by pulling today’s weather and matching it against a curated closet of items to suggest one complete outfit.
+- For MVP, the closet has a preset of ~20 items (future versions will have feature of adding more items) 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MVP scope (V1)
+-	Closet page: displays the preset wardrobe items (grid view)
+-	Generate page: a button that triggers the outfit algorithm and displays the result
+-	Logic: pulls current weather condition based on user’s location, selects one top, one bottom, one pair of shoes and one accessory from the closet, filtered/weighted by weather conditions
+o	If weather is cold enough or rain, add 1 outerwear item
+o	If no valid item exists for a required slot given conditions, show a fallback alert message for incomplete outfit
+-	Display’s outfit with images on Generate Page
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+Tech stack: 
+-	React + TypeScript + Vite
+-	Weather: Open-Meteo (doesn’t require API key, good for quick project)
