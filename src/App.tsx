@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
-import Home from './pages/home'
+import Home from './pages/Home'
 import Closet from './pages/Closet'
 import OutfitResult from './pages/OutfitResult'
 
@@ -16,7 +16,7 @@ function App() {
     return <Closet />
   if (page == "result") 
     return <OutfitResult />
-  return <Home />;
+  return <Home />
   
   return (
     <>

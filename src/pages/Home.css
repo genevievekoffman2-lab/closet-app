@@ -1,0 +1,79 @@
+
+html, body { 
+    background: #c9bfe8;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    color: black; 
+    padding-top: 25%;
+}
+
+.location_box, .weather_box, .btn_box {
+    flex: 1
+}
+
+.location_box { 
+    display: flex; 
+    flex-direction: row;  
+    align-items: center; /* cross axis alignment -> vertically aligns items */
+    justify-content: center;
+}
+
+.location_text {
+    display: flex;
+    align-items: flex-end; /* pushes to left */ 
+    font-size: 40px;
+}
+
+.location_icon {
+    max-height: 40px;
+    object-fit: contain;
+}
+
+.weather_box {
+    display: flex; 
+    flex-direction: row;  
+    align-items: center; 
+}
+
+.temp_img { 
+    max-height: 75px;
+    object-fit: contain; /* proportional */
+}
+
+.temperature { 
+    font-size: 50px;
+}
+
+.weather_details {  
+    line-height: 1; /* Reduces vertical height of the line box */
+    font-size: 15px;  
+    text-align: left;
+}
+
+.btn_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.generate_outfit_btn { 
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px 100px;
+    font-size: 20px;
+    border-radius: 10px;
+    border: 0px;
+    font-weight: bold;
+}
+ 
+.closet_link {
+    color: #550000
+}
+
