@@ -1,10 +1,27 @@
 import './Home.css'
+import { getWeather } from '../lib/weather';
+import { useState, useEffect } from 'react';
+import type { Weather } from '../types/weather';
+
+//TODO: update temp_img based on weather conditions
 
 export default function Home() {
 
-    function generateOutfit() {
-        alert('generate btn clicked')
+    const [weather, setWeather] = useState<Weather | null>(null);
+
+    function generateOutfit() { 
+        console.log("TODO")
     }
+
+    async function loadWeather() {
+        const weather = await getWeather();
+        console.log(weather);
+        setWeather(weather);
+    }
+
+    useEffect(() => {
+        loadWeather();
+    }, []);
 
     return (
         <div> 
@@ -16,10 +33,12 @@ export default function Home() {
                 </div>
 
                 <div className="weather_box">
-                    <img className="temp_img" src='/sunshine_icon.png' alt="🌤️"/>
-                    <div className="temperature">42°F</div>
+                    <img className="temp_img" src='/sunshine_icon.png' alt="🌤️"/> 
+                    <div className="temperature">{weather ? weather.temperature : "err"}°F</div>
                     <div className="weather_details">
-                        <p> Precipitation: 0% <br/> Humidity: 33% <br/>  Wind: 8mph</p>  
+                        <p> Precipitation: {weather ? weather.precipitation : "err"}% 
+                            <br/> Humidity: {weather ? weather.humidity : "err"}% 
+                            <br/>  Wind: {weather ? weather.wind : "err"}mph</p>  
                     </div>
                 </div>
 
