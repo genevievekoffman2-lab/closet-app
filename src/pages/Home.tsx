@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import type { Weather } from '../types/weather';
 
 //TODO: update temp_img based on weather conditions
+type props = {
+    setPage: (page: "home" | "closet" | "result") => void;
+};
 
-export default function Home() {
+export default function Home({setPage} : props) {
 
     const [weather, setWeather] = useState<Weather | null>(null);
 
@@ -46,7 +49,10 @@ export default function Home() {
                     <button className="generate_outfit_btn" onClick={generateOutfit}> 
                         Generate Outfit
                     </button>
-                    <p className="closet_link"> my closet </p>
+                    <a href="#" className="closet_link" onClick={(e) => {
+                        e.preventDefault();
+                        setPage("closet");
+                    }}> my closet </a>
                 </div>
                 
             </div>

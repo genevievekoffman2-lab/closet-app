@@ -16,7 +16,7 @@ function App() {
     return <Closet />
   if (page == "result") 
     return <OutfitResult />
-  return <Home />
+  return <Home setPage={setPage} />
   
   return (
     <>
