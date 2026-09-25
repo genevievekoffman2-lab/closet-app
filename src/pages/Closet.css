@@ -28,3 +28,44 @@ html, body {
 .img_item {
     height: 100%;   
 }
+
+.overlay_container { 
+    position: fixed; 
+    inset: 0;
+    z-index: 10;
+    /* over top all other UI */ 
+    /* width: 75vw;  */
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.white_background {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+}
+
+.flex_item {
+    display: flex;
+    justify-content: center;
+    flex-direction: column; 
+    order: 1;   
+}
+
+.selected_item_img {
+    max-width: 20vw;
+}
+
+.img_title {
+    color: #550000;
+    font-size: 2rem; 
+    padding: 0px 30px;
+}
+
+.item_info {
+    color: #550000;
+    text-align: left;
+    padding: 30px; 
+}
