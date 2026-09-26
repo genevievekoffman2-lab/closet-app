@@ -3,12 +3,20 @@ import { mockCloset } from "../data/closetItems"
 import './Closet.css'
 import type { closetItem } from "../types/closetItem";
 
-export default function Closet() {
+type props = {
+    setPage: (page: "home" | "closet" | "result") => void;
+};
+
+export default function Closet({setPage} : props) {
     const [selectedItem, setSelectedItem] = useState<closetItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
 
     return (
-        <div>
+        <div> 
+            <a href="#" className="home_btn" onClick={(e) => {
+                e.preventDefault();
+                setPage("home")
+            }}> home </a> 
             <p className="title"> My Closet </p>
             <div className="closet_grid">
                 {mockCloset.map((closet_item) => (

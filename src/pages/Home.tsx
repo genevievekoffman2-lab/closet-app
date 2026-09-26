@@ -14,6 +14,8 @@ export default function Home({setPage} : props) {
 
     function generateOutfit() { 
         console.log("TODO")
+        //call logic to compute outfit
+        setPage("result");
     }
 
     async function loadWeather() {

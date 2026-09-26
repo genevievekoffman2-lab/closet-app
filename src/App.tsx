@@ -13,9 +13,9 @@ function App() {
   const [page, setPage] = useState<Page>("home")
 
   if (page == "closet") 
-    return <Closet />
+    return <Closet setPage={setPage} />
   if (page == "result") 
-    return <OutfitResult />
+    return <OutfitResult setPage={setPage}/>
   return <Home setPage={setPage} />
   
   return (
