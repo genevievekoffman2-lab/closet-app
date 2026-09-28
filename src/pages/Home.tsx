@@ -2,20 +2,29 @@ import './Home.css'
 import { getWeather } from '../lib/weather';
 import { useState, useEffect } from 'react';
 import type { Weather } from '../types/weather';
+import { buildOutfit } from '../lib/buildOutfit';
+import type { Outfit } from '../types/outfit'; 
 
-//TODO: update temp_img based on weather conditions
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;
+    setOutfit: (outfit: Outfit) => void;
 };
 
-export default function Home({setPage} : props) {
+export default function Home({setPage, setOutfit} : props) {
 
     const [weather, setWeather] = useState<Weather | null>(null);
 
-    function generateOutfit() { 
-        console.log("TODO")
-        //call logic to compute outfit
-        setPage("result");
+    function generateOutfit() {  
+        //V1: computes outfit based on temperature & precipitation
+        if (weather != null) {
+            const outfitResult = buildOutfit(weather.temperature, weather.precipitation);
+            if (outfitResult == null) { // missing an item 
+                alert('outfit item missing')
+                return;
+            }
+            setOutfit(outfitResult);
+            setPage("result");
+        } 
     }
 
     async function loadWeather() {

@@ -38,7 +38,11 @@ export default function Closet({setPage} : props) {
                             </div>
                             <div className="flex_item">
                                 <p className="img_title"> {selectedItem?.description} </p> 
-                                <p className="item_info"> <br/> {selectedItem?.type} <br/> warmth: {selectedItem?.warmth} <br/> ...more info </p>
+                                <p className="item_info">
+                                    <br /> {selectedItem?.type} <br />
+                                    warmth: {selectedItem?.warmth.join(", ")} <br />
+                                    ... tags coming ...
+                                    </p>
                             </div>
                         </div>
                     </div>

@@ -13,3 +13,12 @@ o	If no valid item exists for a required slot given conditions, show a fallback 
 Tech stack: 
 -	React + TypeScript + Vite
 -	Weather: Open-Meteo (doesn’t require API key, good for quick project)
+
+
+
+# Todo
+- add an alert on 'generate outfit' when weather isn't loading (null)
+- update the temperature icon on home page based on weather
+
+# future ideas 
+- add tags on items to help with the logic of picking the correct outfit (brand, color, etc)

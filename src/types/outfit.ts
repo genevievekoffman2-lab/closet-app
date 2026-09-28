@@ -2,7 +2,7 @@ import type { closetItem } from './closetItem'
 
 
 //TODO add dress as an alternative to top & bottom 
-export interface Outfit { 
+export type Outfit = { 
     top: closetItem;
     bottom: closetItem;
     shoes: closetItem;

@@ -6,16 +6,16 @@ export interface closetItem {
     id: string;
     description: string;
     type: ClothingType;
-    warmth: Warmth;
+    warmth: Warmth[]; //can be many warmth levels
     waterproof: boolean;
     image_url: string;
 }
 
 let mockItem: closetItem = {
-    id: "23FEX", //TODO add random generator
+    id: "23FEX", 
     description: "Black Flats",
     type: "shoes",
-    warmth: "light",
+    warmth: ["light"],
     waterproof: false,
     image_url: '/closetItems/ballet_flats.png'
 }

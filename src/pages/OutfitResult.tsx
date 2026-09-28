@@ -1,29 +1,13 @@
 import './OutfitResult.css'
-import type { Outfit } from "../types/outfit";
-import type { closetItem } from "../types/closetItem";
+import type { Outfit } from "../types/outfit"; 
+
 
 type props = {
+    outfit: Outfit;
     setPage: (page: "home" | "closet" | "result") => void;
 };
-
-let mockItem: closetItem = {
-    id: "23FEX", 
-    description: "Black Flats",
-    type: "shoes",
-    warmth: "light",
-    waterproof: false,
-    image_url: '/closetItems/ballet_flats.png'
-}
-
-
-export default function OutfitResult({setPage}: props) {
-    const outfitResult: Outfit = {
-        top: mockItem,
-        bottom: mockItem,
-        shoes: mockItem,
-        accessory: mockItem
-    }
-
+ 
+export default function OutfitResult({outfit, setPage}: props) { 
     return ( 
         <div className="outer_container">  
             <a href="#" className="home_btn" onClick={(e) => {
@@ -34,42 +18,28 @@ export default function OutfitResult({setPage}: props) {
                 <div className="row top_row">
 
                     <div className="img_item"> 
-                        <img src="public/closetItems/navy_wool_coat.png"></img>
+                        <img src={outfit.accessory.image_url}></img>
                     </div>
                     <div className="img_item"> 
-                        <img src="public/closetItems/white_knit_pullover.png"></img>
+                        <img src={outfit.top.image_url}></img>
                     </div>
                     <div className="img_item"> 
-                        <img src="public/closetItems/pearl_earrings.png"></img>
+                        <img src={outfit.outerwear?.image_url}></img>
                     </div>
 
                 </div>
                 <div className="row bottom_row">
                     <div className="img_item"> 
-                        <img src="public/closetItems/ballet_flats.png"></img>
+                        <img src={outfit.shoes.image_url}></img>
                     </div>
                     <div className="img_item"> 
-                        <img src="public/closetItems/plaid_skirt.png"></img>
+                        <img src={outfit.bottom.image_url}></img>
                     </div>
                     <div className="img_item"> 
                         <img src="public/closetItems/coach_black_bag.png"></img>
                     </div>
                     
-                </div>
-
-
-                {/* <div className="accessory_container"> 
-                    <img src="public/closetItems/pearl_earrings.png" className='img_item'></img>
-                </div>
-                <div className="top_container"> 
-                    <img src="public/closetItems/white_light_blouse.png" className='img_item'></img>
-                </div>
-                <div className="bottom_container"> 
-                    <img src="public/closetItems/plaid_skirt.png" className='img_item'></img>
-                </div>
-                <div className="shoes_container"> 
-                    <img src={outfitResult.shoes.image_url} className='img_item'></img>
-                </div>  */}
+                </div> 
             </div>
         </div>
     )
