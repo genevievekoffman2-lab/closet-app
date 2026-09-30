@@ -47,7 +47,9 @@ export default function Home({setPage, setOutfit} : props) {
                 </div>
 
                 <div className="weather_box">
-                    <img className="temp_img" src='/sunshine_icon.png' alt="🌤️"/> 
+                <img className="temp_img"
+                    src={weather && weather.precipitation > 50 ? "/rain_icon.png" : "/sunshine_icon.png"}
+                    alt={weather && weather.precipitation > 50 ? "Rainy" : "Sunny"} />  
                     <div className="temperature">{weather ? weather.temperature : "err"}°F</div>
                     <div className="weather_details">
                         <p> Precipitation: {weather ? weather.precipitation : "err"}% 

@@ -11,6 +11,13 @@ export default function Closet({setPage} : props) {
     const [selectedItem, setSelectedItem] = useState<closetItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
 
+
+    //flattens tags so I can add to css
+    const tagList = [
+    ...(selectedItem?.tags?.colors ?? []),
+    selectedItem?.tags?.pattern,
+    ].filter(Boolean);
+
     return (
         <div> 
             <a href="#" className="home_btn" onClick={(e) => {
@@ -40,8 +47,8 @@ export default function Closet({setPage} : props) {
                                 <p className="img_title"> {selectedItem?.description} </p> 
                                 <p className="item_info">
                                     <br /> {selectedItem?.type} <br />
-                                    warmth: {selectedItem?.warmth.join(", ")} <br />
-                                    ... tags coming ...
+                                    warmth: {selectedItem?.warmth.join(", ")} <br /> 
+                                    {tagList.map((tag) => (<span key={tag} className="tag_chip">#{tag} </span>))}
                                     </p>
                             </div>
                         </div>

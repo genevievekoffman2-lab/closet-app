@@ -1,3 +1,4 @@
+import type { itemTags } from "./closetItemTags";
 
 export type ClothingType = "top" | "bottom" | "shoes" | "accessory" | "outerwear";
 export type Warmth = "light" | "medium" | "heavy";
@@ -9,6 +10,7 @@ export interface closetItem {
     warmth: Warmth[]; //can be many warmth levels
     waterproof: boolean;
     image_url: string;
+    tags?: itemTags;
 }
 
 let mockItem: closetItem = {
