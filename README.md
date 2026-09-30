@@ -19,6 +19,12 @@ Tech stack:
 # Todo
 - add an alert on 'generate outfit' when weather isn't loading (null)
 - update the temperature icon on home page based on weather
+- add seasonal label (only wool skirts in fall/winter, only sundresses in summer etc)
 
 # future ideas 
-- add tags on items to help with the logic of picking the correct outfit (brand, color, etc)
+- add tags on items to help with the logic of picking the correct outfit (brand, color, fitted/loose/tight etc)
+- either top&bottom OR one piece (dress)
+- more than one accessory 
+- instead of types (shoes, tops) -> switch to zones (upper body, lower, feet) so we can include layering
+- numeric warmth rework (each item has a weight instead of a warmth type)
+- casual / business / cozy etc

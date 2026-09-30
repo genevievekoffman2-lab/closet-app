@@ -17,6 +17,10 @@ export const mockCloset: closetItem[] = [
     { id: "008KK", description: "Black Headband", type: "accessory", warmth: ["medium","light", "heavy"], waterproof: false, image_url: "/closetItems/black_headband.png" },
     { id: "138LP", description: "Raincoat", type: "outerwear", warmth: ["medium", "light"], waterproof: true, image_url: "/closetItems/rains_neutral_raincoat.png" },
     { id: "06EJK", description: "Navy Sweater", type: "top", warmth: ["medium", "heavy"], waterproof: false, image_url: "/closetItems/gap_navy_sweater.png" },
+    { id: "762JJ", description: "Jeans", type: "bottom", warmth: ["medium", "heavy"], waterproof: false, image_url: "/closetItems/light_denim_jeans.png" },
+    { id: "908NM", description: "Silk Scarf", type: "accessory", warmth: ["medium", "light"], waterproof: false, image_url: "/closetItems/silk_scarf_stripe.png" },
+    { id: "09KKL", description: "Crochet Sandals", type: "shoes", warmth: ["medium", "light"], waterproof: false, image_url: "/closetItems/crochet_sandals_chanel.png" },
+
 ]
 
 
