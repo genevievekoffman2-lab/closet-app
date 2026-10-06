@@ -4,12 +4,14 @@ import Home from './pages/Home'
 import Closet from './pages/Closet'
 import OutfitResult from './pages/OutfitResult'
 import type { Outfit } from './types/outfit'
+import type { ClosetItem } from './types/ClosetItem2'
 
 type Page = "home" | "closet" | "result"
 
 function App() { 
-  const [page, setPage] = useState<Page>("home")
-  const [outfit, setOutfit] = useState<Outfit | null>(null);
+  const [page, setPage] = useState<Page>("home") 
+  const [outfit, setOutfit] = useState<ClosetItem[] | null>(null);
+
 
   if (page == "closet") 
     return <Closet setPage={setPage} />

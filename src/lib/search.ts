@@ -24,7 +24,10 @@ function isValid(outfit: Outfit, minWarmth: number, maxWarmth: number): boolean 
   return hasAllZones && warmthOk && requiresMet;
 }
 
-export function findOutfits(minWarmth: number, maxWarmth: number, items: PrimaryItem[]): Outfit[] {
+export function findOutfits(
+  minWarmth: number, 
+  maxWarmth: number, 
+  items: PrimaryItem[]): Outfit[] {
   const results: Outfit[] = [];
 
   // for each item: try the outfit with it, then without it

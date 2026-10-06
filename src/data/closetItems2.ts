@@ -12,6 +12,8 @@ const outerwear_zone: ClosetItem[] = [
   { id: "2-outer", description: "Raincoat", type: "outerwear", warmth: 0.5, waterproof: true, image_url: "/closetItems/rains_neutral_raincoat.png" },
 ];
 
+//shoes must be feet:2
+//pants and tights take up bottom 0
 export const primary_zone: PrimaryItem[] = [
   { id: "1-top", description: "White Blouse", type: "primary", occupies: ["top:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/white_light_blouse.png" },
   { id: "2-top", description: "Knit Sweater", type: "primary", occupies: ["top:2"], requires: [], warmth: 0.5, waterproof: false, image_url: "/closetItems/white_knit_pullover.png" },
@@ -24,14 +26,14 @@ export const primary_zone: PrimaryItem[] = [
     { id: "0-btm", description: "Black Tights", type: "primary", occupies: ["bottom:0", "feet:0"], requires: ["bottom:1"], warmth: 0.2, waterproof:false, image_url: "/closetItems/black_tights.png"},
     { id: "1-btm", description: "Plaid Mini Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.4, waterproof: false, image_url: "/closetItems/plaid_skirt.png" },
   { id: "2-btm", description: "Leather Shorts", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/br_leather_shorts.png" },
-  { id: "3-btm", description: "Jeans", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.4, waterproof: false, image_url: "/closetItems/light_denim_jeans.png" },
+  { id: "3-btm", description: "Jeans", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.4, waterproof: false, image_url: "/closetItems/light_denim_jeans.png" },
   { id: "4-btm", description: "Polka Dot Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/polka_dot_maxi_skirt.png" },
-   { id: "5-btm", description: "Black Slacks", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/black_slacks.png" },
+   { id: "5-btm", description: "Black Slacks", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/black_slacks.png" },
    { id: "6-btm", description: "Micro Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.1, waterproof: false, image_url: "/closetItems/micro_grey_skirt.png" },
 
   { id: "1-ft", description: "Black Flats", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/ballet_flats.png" },
-  { id: "2-ft", description: "Red Kitten Heels", type: "primary", occupies: ["feet:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/red_kitten_heels.png" },
-  { id: "3-ft", description: "Crochet Sandals", type: "primary", occupies: ["feet:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/crochet_sandals_chanel.png" },
+  { id: "2-ft", description: "Red Kitten Heels", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/red_kitten_heels.png" },
+  { id: "3-ft", description: "Crochet Sandals", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/crochet_sandals_chanel.png" },
   { id: "4-ft", description: "Rain Boots", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.4, waterproof: true, image_url: "/closetItems/burberry_rainboots.png" },
   //{ id: "5-ft", description: "Black Stockings", type: "primary", occupies: ["feet:1"], requires: ["feet:2"], warmth: 0.2, waterproof: false, image_url: "/closetItems/black_stockings.png" },
   { id: "6-ft", description: "Ruffle Socks", type: "primary", occupies: ["feet:1"], requires: ["feet:2"], warmth: 0.1, waterproof: false, image_url: "/closetItems/white_socks_ruffle.png" },

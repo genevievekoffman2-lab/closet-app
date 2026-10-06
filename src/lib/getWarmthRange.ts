@@ -5,7 +5,7 @@
 
 
 //takes temperature in degF, humidity as percent, and wind in mph 
-// returns an array with form: ["upper": [min_warmth, max_warmth], "bottom": [min, max]]
+// returns [min_warmth, max_warmth] (window)
 export function getWarmthRanges(temp: number, humidity: number, wind: number) { 
     let target_warmth: number;
     
@@ -14,7 +14,7 @@ export function getWarmthRanges(temp: number, humidity: number, wind: number) {
     } else if (temp < 50) {
         target_warmth = 0.7; // cold
     } else if (temp < 65) {
-        target_warmth = 0.5; // cool
+        target_warmth = 0.6; // cool
     } else if (temp < 80) {
     target_warmth = 0.25; // mild/warm
     } else {
@@ -33,11 +33,6 @@ export function getWarmthRanges(temp: number, humidity: number, wind: number) {
     let min_warmth = target_warmth - 0.1;
     let max_warmth = target_warmth + 0.1;
 
-    return { 
-        top: [min_warmth, max_warmth],
-        bottom: [min_warmth, max_warmth], 
-        foot: [(target_warmth*0.5)-0.1, max_warmth], //foot doesn't need as much warmth 
-        outerwear: [min_warmth, max_warmth],
-    };
+    return [min_warmth, max_warmth];
 }
  

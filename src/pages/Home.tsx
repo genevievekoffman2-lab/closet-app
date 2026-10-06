@@ -1,14 +1,13 @@
 import './Home.css'
 import { getWeather } from '../lib/weather';
 import { useState, useEffect } from 'react';
-import type { Weather } from '../types/weather';
-import { buildOutfit } from '../lib/buildOutfit';
-import type { Outfit } from '../types/outfit'; 
+import type { Weather } from '../types/weather';  
 import { buildOutfit2 } from '../lib/buildOutfit2';
+import type { ClosetItem } from '../types/ClosetItem2';
 
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;
-    setOutfit: (outfit: Outfit) => void;
+    setOutfit: (outfit: ClosetItem[] | null) => void;
 };
 
 export default function Home({setPage, setOutfit} : props) {
@@ -24,24 +23,10 @@ export default function Home({setPage, setOutfit} : props) {
                 return;
             }
             console.log(outfitResult)
-            //setOutfit(outfitResult);
-            //setPage("result");
-        }
-    }
-
-    function generateOutfit() {  
-        //V1: computes outfit based on temperature & precipitation
-        if (weather != null) {
-            
-            const outfitResult = buildOutfit(weather.temperature, weather.precipitation); 
-            if (outfitResult == null) { // missing an item 
-                alert('outfit item missing')
-                return;
-            }
             setOutfit(outfitResult);
             setPage("result");
-        } 
-    }
+        }
+    } 
 
     async function loadWeather() {
         const weather = await getWeather();
@@ -75,10 +60,9 @@ export default function Home({setPage, setOutfit} : props) {
                 </div>
 
                 <div className="btn_box">
-                    <button className="generate_outfit_btn" onClick={generateOutfit}> 
+                    <button className="generate_outfit_btn" onClick={generateOutfitV2}> 
                         Generate Outfit
-                    </button>
-                    <button onClick={generateOutfitV2}> V2 outfit</button>
+                    </button> 
                     <a href="#" className="closet_link" onClick={(e) => {
                         e.preventDefault();
                         setPage("closet");
