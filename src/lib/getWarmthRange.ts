@@ -34,11 +34,9 @@ export function getWarmthRanges(temp: number, humidity: number, wind: number) {
     let max_warmth = target_warmth + 0.1;
 
     return { 
-        upper: [min_warmth, max_warmth],
-        bottom: [min_warmth, max_warmth],
-        'one-piece': [min_warmth, max_warmth],
-        foot: [(target_warmth*0.5)-0.1, max_warmth], //foot doesn't need as much warmth
-        accessory: [0,1], //anything goes
+        top: [min_warmth, max_warmth],
+        bottom: [min_warmth, max_warmth], 
+        foot: [(target_warmth*0.5)-0.1, max_warmth], //foot doesn't need as much warmth 
         outerwear: [min_warmth, max_warmth],
     };
 }

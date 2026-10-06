@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Weather } from '../types/weather';
 import { buildOutfit } from '../lib/buildOutfit';
 import type { Outfit } from '../types/outfit'; 
+import { buildOutfit2 } from '../lib/buildOutfit2';
 
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;
@@ -14,10 +15,25 @@ export default function Home({setPage, setOutfit} : props) {
 
     const [weather, setWeather] = useState<Weather | null>(null);
 
+    function generateOutfitV2() {
+        //V2
+        if (weather != null) {
+            const outfitResult = buildOutfit2(weather.temperature, weather.precipitation, weather.humidity, weather.wind); 
+            if (outfitResult == null) { // missing an item 
+                alert('outfit item missing')
+                return;
+            }
+            console.log(outfitResult)
+            //setOutfit(outfitResult);
+            //setPage("result");
+        }
+    }
+
     function generateOutfit() {  
         //V1: computes outfit based on temperature & precipitation
         if (weather != null) {
-            const outfitResult = buildOutfit(weather.temperature, weather.precipitation);
+            
+            const outfitResult = buildOutfit(weather.temperature, weather.precipitation); 
             if (outfitResult == null) { // missing an item 
                 alert('outfit item missing')
                 return;
@@ -62,6 +78,7 @@ export default function Home({setPage, setOutfit} : props) {
                     <button className="generate_outfit_btn" onClick={generateOutfit}> 
                         Generate Outfit
                     </button>
+                    <button onClick={generateOutfitV2}> V2 outfit</button>
                     <a href="#" className="closet_link" onClick={(e) => {
                         e.preventDefault();
                         setPage("closet");

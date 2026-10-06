@@ -8,6 +8,7 @@ export interface closetItem {
     description: string;
     type: ClothingType;
     warmth: Warmth[]; //can be many warmth levels
+    warmth_value?: number; //0-1 (0 being no warmth vs 1 highest warmth) 
     waterproof: boolean;
     image_url: string;
     tags?: itemTags;
@@ -19,5 +20,6 @@ let mockItem: closetItem = {
     type: "shoes",
     warmth: ["light"],
     waterproof: false,
+    warmth_value: 0.2,
     image_url: '/closetItems/ballet_flats.png'
 }

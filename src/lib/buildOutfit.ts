@@ -19,21 +19,18 @@ export function buildOutfit(
     precipitation: number
 ): Outfit | null {
 
-    const warmth = determineWarmth(temperature);
-    console.log(warmth);
+    const warmth = determineWarmth(temperature); 
 
     // for now, choses randomly
-    let selected_top = pickRandom(groupedCloset.tops[warmth]);
-    console.log(selected_top?.description)
-    let selected_bottom = pickRandom(groupedCloset.bottoms[warmth]);
-    console.log(selected_bottom?.description)
-    let selected_shoes = pickRandom(groupedCloset.shoes[warmth]);
-    console.log(selected_shoes?.description)
-    let selected_accessory = pickRandom(groupedCloset.accessories[warmth]);
-    console.log(selected_accessory?.description)
+    let selected_top = pickRandom(groupedCloset.tops[warmth]); 
+    let selected_bottom = pickRandom(groupedCloset.bottoms[warmth]); 
+    let selected_shoes = pickRandom(groupedCloset.shoes[warmth]); 
+    let selected_accessory = pickRandom(groupedCloset.accessories[warmth]); 
     let selected_outerwear;
 
     //if it is raining, select an outerwear
+    // TODO: add umbrella to accessory 
+    // TODO: select a water proof pair of shoes
     if (precipitation > 50) {
         selected_outerwear = pickRandom(groupedCloset.outerwear[warmth]);
     }
@@ -57,7 +54,7 @@ export function buildOutfit(
 
 //based on temperature, determines the warmth needed for clothing items
 function determineWarmth(temperature: number): Warmth {
-    if (temperature > 65) return "light";
+    if (temperature > 70) return "light";
     if (temperature < 40) return "heavy";
     return "medium";
 }
