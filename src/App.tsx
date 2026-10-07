@@ -3,7 +3,7 @@ import './App.css'
 import Home from './pages/Home'
 import Closet from './pages/Closet'
 import OutfitResult from './pages/OutfitResult'
-import type { ClosetItem } from './types/ClosetItem'
+import type { ClosetItem } from './types/ClosetItem.ts'
 
 type Page = "home" | "closet" | "result"
 

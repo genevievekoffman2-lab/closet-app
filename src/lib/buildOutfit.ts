@@ -1,7 +1,7 @@
 /** Build Outfit Logic for V2 using weighted warmths */
 
 import { closet } from "../data/closetItems"; 
-import type { ClosetItem } from "../types/closetItem";
+import type { ClosetItem } from "../types/ClosetItem.ts";
 import { getWarmthRanges } from "./getWarmthRange"; 
 import { findOutfits } from "./search";
 
@@ -12,6 +12,9 @@ export function buildOutfit2(
     wind: number
 ) { 
     const isRaining = precipitation > 50;
+    if (isRaining) {
+        console.log('raining...TODO');
+    }
 
     //determines warmth window 
     let warmth_ranges = getWarmthRanges(temperature, humidity, wind) 
@@ -41,7 +44,7 @@ export function buildOutfit2(
     }
 
     // select accessories : random right now; TODO: add logic
-    let chosen_accessory = selectAccessorries(chosen_outfit);
+    let chosen_accessory = selectAccessorries();
     chosen_outfit.push(chosen_accessory);
 
     return chosen_outfit;  
@@ -55,7 +58,7 @@ function computeOutfitWarmth(outfit: ClosetItem[]): number {
 }
 
 // based on the items in the existing outfit, we select appropriate accessories
-function selectAccessorries(outfit: ClosetItem[]) {
+function selectAccessorries() {
     //if it is sunny -> we need sunglasses 
 
     // for now, pick a random bag 

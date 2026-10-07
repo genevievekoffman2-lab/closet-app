@@ -1,5 +1,5 @@
 import './OutfitResult.css'
-import type { ClosetItem } from '../types/closetItem';
+import type { ClosetItem } from '../types/ClosetItem.ts';
 
 //for V2 -> with layering ; CLAUDE generated code
 

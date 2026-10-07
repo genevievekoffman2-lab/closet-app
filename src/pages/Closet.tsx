@@ -1,6 +1,6 @@
 import { useState } from "react" 
 import './Closet.css'
-import type { ClosetItem } from "../types/closetItem"
+import type { ClosetItem } from "../types/ClosetItem.ts"
 import { closet } from "../data/closetItems";
 
 //TODO add filtering
@@ -44,6 +44,7 @@ export default function Closet({setPage} : props) {
                                 <p className="item_info"> 
                                     {selectedItem?.tags?.map((tag) => {
                                         const [name,value] = tag.split(":");
+                                        console.log(name);
                                         return (<span className="tag_chip" key={tag}> #{value}</span>);
                                     }) }
                                 </p>

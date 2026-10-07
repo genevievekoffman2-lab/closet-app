@@ -1,5 +1,5 @@
 /** Mock Data for V2 */
-import type { ClosetItem } from "../types/closetItem";
+import type { ClosetItem } from "../types/ClosetItem.ts";
 
 //shoes must be feet:2
 //pants and tights take up bottom 0 

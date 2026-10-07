@@ -7,7 +7,7 @@
         ]
 */
 
-import type { ClothingZone, PrimaryItem } from "../types/closetItem";
+import type { ClothingZone, PrimaryItem } from "../types/ClosetItem.ts"; 
 
 type Outfit = PrimaryItem[];
 

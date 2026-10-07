@@ -7,10 +7,10 @@ export interface Weather {
     wind: number; // %
 }
 
-let mockLocation: Weather = {
-    location: "New York City",
-    temperature: 42,
-    precipitation: 0,
-    humidity: 33,
-    wind: 8
-};
+// let mockLocation: Weather = {
+//     location: "New York City",
+//     temperature: 42,
+//     precipitation: 0,
+//     humidity: 33,
+//     wind: 8
+// };
