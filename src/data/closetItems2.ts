@@ -1,20 +1,18 @@
 /** Mock Data for V2 */
-import type { ClosetItem, PrimaryItem } from "../types/ClosetItem2";
+import type { ClosetItem } from "../types/ClosetItem2";
 
-const accessory_zone: ClosetItem[] = [
+//shoes must be feet:2
+//pants and tights take up bottom 0 
+export const closet: ClosetItem[] = [
   { id: "1-accessory", description: "Pearl Earrings", type: "accessory", category: "ear", warmth: 0, waterproof: false, image_url: "/closetItems/pearl_earrings.png" },
   { id: "2-accessory", description: "Black Headband", type: "accessory", category: "head", warmth: 0, waterproof: false, image_url: "/closetItems/black_headband.png" },
   { id: "3-accessory", description: "Silk Scarf", type: "accessory", category: "neck", warmth: 0, waterproof: false, image_url: "/closetItems/silk_scarf_stripe.png" },
-];
 
-const outerwear_zone: ClosetItem[] = [
   { id: "1-outer", description: "Wool Coat", type: "outerwear", warmth: 1, waterproof: false, image_url: "/closetItems/navy_wool_coat.png" },
   { id: "2-outer", description: "Raincoat", type: "outerwear", warmth: 0.5, waterproof: true, image_url: "/closetItems/rains_neutral_raincoat.png" },
-];
+  { id: "3-outer", description: "Barbour Quilted Coat", type: "outerwear", warmth: 0.6, waterproof: false, image_url: "/closetItems/barbour_kilnwick_quilted_jacket.png" },
+  { id: "4-outer", description: "Bomber Jacket", type: "outerwear", warmth: 0.6, waterproof: false, image_url: "/closetItems/Dark_beige_jacket.png" },
 
-//shoes must be feet:2
-//pants and tights take up bottom 0
-export const primary_zone: PrimaryItem[] = [
   { id: "1-top", description: "White Blouse", type: "primary", occupies: ["top:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/white_light_blouse.png" },
   { id: "2-top", description: "Knit Sweater", type: "primary", occupies: ["top:2"], requires: [], warmth: 0.5, waterproof: false, image_url: "/closetItems/white_knit_pullover.png" },
   { id: "3-top", description: "Navy Sweater", type: "primary", occupies: ["top:2"], requires: [], warmth: 0.5, waterproof: false, image_url: "/closetItems/gap_navy_sweater.png" },
@@ -37,5 +35,8 @@ export const primary_zone: PrimaryItem[] = [
   { id: "4-ft", description: "Rain Boots", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.4, waterproof: true, image_url: "/closetItems/burberry_rainboots.png" },
   //{ id: "5-ft", description: "Black Stockings", type: "primary", occupies: ["feet:1"], requires: ["feet:2"], warmth: 0.2, waterproof: false, image_url: "/closetItems/black_stockings.png" },
   { id: "6-ft", description: "Ruffle Socks", type: "primary", occupies: ["feet:1"], requires: ["feet:2"], warmth: 0.1, waterproof: false, image_url: "/closetItems/white_socks_ruffle.png" },
-]
+];
 
+
+
+ 

@@ -27,7 +27,7 @@ export function getWarmthRanges(temp: number, humidity: number, wind: number) {
     }
     // if wind -> increase target; it feels colder
     if (wind > 35) {
-        target_warmth = target_warmth * 1.05;
+        target_warmth = target_warmth * 1.1;
     }  
 
     let min_warmth = target_warmth - 0.1;

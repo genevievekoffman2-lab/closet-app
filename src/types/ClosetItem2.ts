@@ -1,15 +1,19 @@
+import type { itemTags } from "./closetItemTags";
+
 export type ClothingZone = "top" | "bottom" | "feet";// | "accessory" | "outerwear";
 type AccessoryCategory = "head" | "ear" | "neck" | "wrist" | "waist";
 
 // a spot in the outfit
 export type Slot = `${ClothingZone}:${number}` //ex: "top:1", "feet:2"
 
-interface BaseItem {
+export interface BaseItem {
   id: string;
   description: string; 
   image_url: string;  
   warmth: number; // 0-1 
   waterproof: boolean;
+  tags?: itemTags;
+  brand?: string;
 }
 
 export interface PrimaryItem extends BaseItem {

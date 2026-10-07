@@ -1,14 +1,14 @@
-import { useState } from "react"
-import { mockCloset } from "../data/closetItems"
+import { useState } from "react" 
 import './Closet.css'
-import type { closetItem } from "../types/closetItem";
+import type { BaseItem } from "../types/ClosetItem2"
+import { closet } from "../data/closetItems2";
 
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;
 };
 
 export default function Closet({setPage} : props) {
-    const [selectedItem, setSelectedItem] = useState<closetItem | null>(null);
+    const [selectedItem, setSelectedItem] = useState<BaseItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
 
 
@@ -26,7 +26,7 @@ export default function Closet({setPage} : props) {
             }}> home </a> 
             <p className="title"> My Closet </p>
             <div className="closet_grid">
-                {mockCloset.map((closet_item) => (
+                {closet.map((closet_item) => (
                     <div className="closet_box" onClick={() => {
                         setShowOverlay(true);
                         setSelectedItem(closet_item)
@@ -46,8 +46,8 @@ export default function Closet({setPage} : props) {
                             <div className="flex_item">
                                 <p className="img_title"> {selectedItem?.description} </p> 
                                 <p className="item_info">
-                                    <br /> {selectedItem?.type} <br />
-                                    warmth: {selectedItem?.warmth.join(", ")} <br /> 
+                                    <br /> {selectedItem?.brand} <br />
+                                    warmth: {selectedItem?.warmth} <br /> 
                                     {tagList.map((tag) => (<span key={tag} className="tag_chip">#{tag} </span>))}
                                     </p>
                             </div>
