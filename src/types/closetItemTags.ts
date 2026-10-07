@@ -4,7 +4,7 @@ export type Color =
     | "gray"
     | "navy"
     | "blue"
-    | "light blue"
+    | "light-blue"
     | "red"
     | "pink"
     | "orange"

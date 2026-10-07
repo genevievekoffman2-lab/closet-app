@@ -1,22 +1,18 @@
 import { useState } from "react" 
 import './Closet.css'
-import type { BaseItem } from "../types/ClosetItem2"
-import { closet } from "../data/closetItems2";
+import type { ClosetItem } from "../types/closetItem"
+import { closet } from "../data/closetItems";
+
+//TODO add filtering
 
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;
 };
 
 export default function Closet({setPage} : props) {
-    const [selectedItem, setSelectedItem] = useState<BaseItem | null>(null);
+    const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
 
-
-    //flattens tags so I can add to css
-    const tagList = [
-    ...(selectedItem?.tags?.colors ?? []),
-    selectedItem?.tags?.pattern,
-    ].filter(Boolean);
 
     return (
         <div> 
@@ -45,11 +41,12 @@ export default function Closet({setPage} : props) {
                             </div>
                             <div className="flex_item">
                                 <p className="img_title"> {selectedItem?.description} </p> 
-                                <p className="item_info">
-                                    <br /> {selectedItem?.brand} <br />
-                                    warmth: {selectedItem?.warmth} <br /> 
-                                    {tagList.map((tag) => (<span key={tag} className="tag_chip">#{tag} </span>))}
-                                    </p>
+                                <p className="item_info"> 
+                                    {selectedItem?.tags?.map((tag) => {
+                                        const [name,value] = tag.split(":");
+                                        return (<span className="tag_chip" key={tag}> #{value}</span>);
+                                    }) }
+                                </p>
                             </div>
                         </div>
                     </div>

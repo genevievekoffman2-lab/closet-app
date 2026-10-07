@@ -1,6 +1,5 @@
 import './OutfitResult.css' 
-import type { ClosetItem } from '../types/ClosetItem2';
-
+import type { ClosetItem } from '../types/ClosetItem';
 
 type props = { 
     outfit: ClosetItem[] | null;
@@ -12,7 +11,6 @@ export default function OutfitResult({outfit, setPage}: props) {
     const topCount = Math.floor(items.length / 2);
     const topRow = items.slice(0, topCount);
     const bottomRow = items.slice(topCount);
-
 
     return ( 
         <div className="outer_container">  

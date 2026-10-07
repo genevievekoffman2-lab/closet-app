@@ -1,67 +1,66 @@
-/** Logic to build an outfit given the temperature conditions */
+/** Build Outfit Logic for V2 using weighted warmths */
 
-import type { Outfit } from "../types/outfit";
-import { groupItemsToCloset } from "./groupClosetItems";
-import { mockCloset } from "../data/closetItems";
-import type { closetItem } from "../types/closetItem";
-import type { Warmth } from "../types/closetItem";
+import { closet } from "../data/closetItems"; 
+import type { ClosetItem } from "../types/closetItem";
+import { getWarmthRanges } from "./getWarmthRange"; 
+import { findOutfits } from "./search";
 
-/**  
- * for V1: closetItems are in a dictionary of tops, bottoms, shoes, etc with key=warmth
- * later versions will be in database and I'll query based on warmth
- */
-
-// returns an outfit or null
-const groupedCloset = groupItemsToCloset(mockCloset); //uses set mock data for V1
-
-export function buildOutfit(
+export function buildOutfit2(
     temperature: number,
-    precipitation: number
-): Outfit | null {
+    precipitation: number,
+    humidity: number,
+    wind: number
+) { 
+    const isRaining = precipitation > 50;
 
-    const warmth = determineWarmth(temperature); 
+    //determines warmth window 
+    let warmth_ranges = getWarmthRanges(temperature, humidity, wind) 
+    let min_warmth = warmth_ranges[0] * 2 //*2 because it considers both top & btm coverage
+    let max_warmth = warmth_ranges[1] * 2 
 
-    // for now, choses randomly
-    let selected_top = pickRandom(groupedCloset.tops[warmth]); 
-    let selected_bottom = pickRandom(groupedCloset.bottoms[warmth]); 
-    let selected_shoes = pickRandom(groupedCloset.shoes[warmth]); 
-    let selected_accessory = pickRandom(groupedCloset.accessories[warmth]); 
-    let selected_outerwear;
-
-    //if it is raining, select an outerwear
-    // TODO: add umbrella to accessory 
-    // TODO: select a water proof pair of shoes
-    if (precipitation > 50) {
-        selected_outerwear = pickRandom(groupedCloset.outerwear[warmth]);
-    }
+    let primaryItems = closet.filter((item)=> item.type == "primary");
+    // generate a list of possible outfits (primary outfit) meeting min total warmth
+    const outfits = findOutfits(min_warmth, max_warmth, primaryItems);
+ 
+    if (outfits.length === 0) return null; // nothing fits the range
     
-    if (!selected_top || !selected_bottom || !selected_shoes || !selected_accessory) {
-        return null; //TODO show "missing item" alert
+    //TODO: if raining, select a waterproof shoe
+    //TODO Add accessories (& umbrella if raining)
+    
+    const chosen_outfit: ClosetItem[] =  outfits[Math.floor(Math.random() * outfits.length)];// pick one at random
+    
+    // might need outerwear
+    if (temperature < 60 ) {
+        const coats = closet.filter((item) => item.type == "outerwear" && !item.waterproof);  
+        const fit_warmth = computeOutfitWarmth(chosen_outfit)
+        let gap = max_warmth - fit_warmth
+        if (gap>0) { //if base outfit isn't warm enough - we grab a coat
+            let coat = coats[Math.floor(Math.random()*coats.length)] // random atm TODO add logic
+            chosen_outfit.push(coat);
+        } 
     }
 
-    const selectedOutfit: Outfit = {
-        top : selected_top,
-        bottom: selected_bottom,
-        shoes: selected_shoes,
-        accessory: selected_accessory,
-        outerwear: selected_outerwear
-    }
+    // select accessories : random right now; TODO: add logic
+    let chosen_accessory = selectAccessorries(chosen_outfit);
+    chosen_outfit.push(chosen_accessory);
 
-    return selectedOutfit;
+    return chosen_outfit;  
 }
 
-
-
-//based on temperature, determines the warmth needed for clothing items
-function determineWarmth(temperature: number): Warmth {
-    if (temperature > 70) return "light";
-    if (temperature < 40) return "heavy";
-    return "medium";
+function computeOutfitWarmth(outfit: ClosetItem[]): number {
+    return outfit.filter((item) => 
+        item.type == "primary" && 
+        item.occupies.some((slot) => slot.startsWith("top:") || slot.startsWith("bottom"))
+    ).reduce((sum, item) => sum + item.warmth, 0);
 }
 
+// based on the items in the existing outfit, we select appropriate accessories
+function selectAccessorries(outfit: ClosetItem[]) {
+    //if it is sunny -> we need sunglasses 
 
-// for V1, we chose a random item in the category otherwise return undefined if it dne
-function pickRandom(items: closetItem[]): closetItem | undefined {
-    if (items.length === 0) return undefined;
-    return items[Math.floor(Math.random() * items.length)];
+    // for now, pick a random bag 
+    const bags = closet.filter((item) => item.type == "accessory" && item.category == "bag");  
+    let chosen_bag = bags[Math.floor(Math.random()*bags.length)]  
+
+    return chosen_bag;
 }

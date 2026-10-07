@@ -2,8 +2,8 @@ import './Home.css'
 import { getWeather } from '../lib/weather';
 import { useState, useEffect } from 'react';
 import type { Weather } from '../types/weather';  
-import { buildOutfit2 } from '../lib/buildOutfit2';
-import type { ClosetItem } from '../types/ClosetItem2';
+import { buildOutfit2 } from '../lib/buildOutfit';
+import type { ClosetItem } from '../types/ClosetItem';
 
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;

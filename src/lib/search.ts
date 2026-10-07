@@ -7,7 +7,7 @@
         ]
 */
 
-import type { ClothingZone, PrimaryItem } from "../types/ClosetItem2";
+import type { ClothingZone, PrimaryItem } from "../types/closetItem";
 
 type Outfit = PrimaryItem[];
 
