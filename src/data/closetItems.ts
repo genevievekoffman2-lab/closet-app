@@ -53,7 +53,8 @@ export const closet: ClosetItem[] = [
   { id: "3-ft", description: "Crochet Sandals", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/crochet_sandals_chanel.png" },
   //{ id: "4-ft", description: "Rain Boots", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.4, waterproof: true, image_url: "/closetItems/burberry_rainboots.png" },
   { id: "6-ft", description: "Ruffle Socks", type: "primary", occupies: ["feet:1"], requires: ["feet:2"], warmth: 0.1, waterproof: false, image_url: "/closetItems/white_socks_ruffle.png" },
-  
+  { id: "7-ft", description: "Cheetah Sneakers", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/cheetah_sneakers.png" },
+
   
 
 ];

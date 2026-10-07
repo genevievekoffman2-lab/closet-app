@@ -3,7 +3,7 @@ import { getWeather } from '../lib/weather';
 import { useState, useEffect } from 'react';
 import type { Weather } from '../types/weather';  
 import { buildOutfit2 } from '../lib/buildOutfit';
-import type { ClosetItem } from '../types/ClosetItem';
+import type { ClosetItem } from '../types/closetItem';
 
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;

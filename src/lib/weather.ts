@@ -8,6 +8,10 @@ import type { Weather } from "../types/weather";
 const DEFAULT_LATITUDE = 40.7128;
 const DEFAULT_LONGITUDE = -74.006;
 
+//white horse canada -- FREEZING
+
+//costa rica -- HOT
+
 /** Get Temperature based on location */
 export async function getWeather(
     latitude: number = DEFAULT_LATITUDE,

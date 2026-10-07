@@ -18,10 +18,12 @@ function isValid(outfit: Outfit, minWarmth: number, maxWarmth: number): boolean 
   const hasAllZones = (["top", "bottom", "feet"] as ClothingZone[]).every((zone) =>
     occupied.some((slot) => slot.startsWith(zone + ":"))
   );
+
+  const hasShoes = occupied.includes("feet:2");
   const warmthOk = warmth >= minWarmth && warmth <= maxWarmth;
   const requiresMet = outfit.every((item) => item.requires.every((slot) => occupied.includes(slot)));
 
-  return hasAllZones && warmthOk && requiresMet;
+  return hasShoes && hasAllZones && warmthOk && requiresMet;
 }
 
 export function findOutfits(

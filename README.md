@@ -1,6 +1,6 @@
 Problem Statement: 
-- Deciding what to wear every morning is a small but real source of stress and looking good tends to set a confident tone for the day. This app removes that decision by pulling today’s weather and matching it against a curated closet of items to suggest one complete outfit.
-- For MVP, the closet has a preset of ~20 items (future versions will have feature of adding more items) 
+- Deciding what to wear every morning is a small but real source of stress and looking good tends to set a confident tone for the day. This app removes that decision by pulling today’s weather and matching it against a curated closet of items to suggest one complete outfit. (This MVP is tailored to my style and my closet and location)
+- For MVP, the closet has a preset of items (future versions will have feature of adding more items) 
 
 MVP scope (V1)
 -	Closet page: displays the preset wardrobe items (grid view)
@@ -15,7 +15,6 @@ Tech stack:
 -	Weather: Open-Meteo (doesn’t require API key, good for quick project)
 
 
-
 # Todo
 - add an alert on 'generate outfit' when weather isn't loading (null)
 - update the temperature icon on home page based on weather
@@ -23,8 +22,11 @@ Tech stack:
 
 # future ideas 
 - add tags on items to help with the logic of picking the correct outfit (brand, color, fitted/loose/tight etc)
-- either top&bottom OR one piece (dress)
-- more than one accessory 
-- instead of types (shoes, tops) -> switch to zones (upper body, lower, feet) so we can include layering
-- numeric warmth rework (each item has a weight instead of a warmth type)
 - casual / business / cozy etc
+- pairing colors and patterns together; adhering to a style
+
+
+
+# VERSION 3 (working on now)
+- allow user to accept or reject a piece (lets say they dont want tights with the presented outfit, user can 'x' it)
+- allow user to swipe a piece (lets say user likes fit but wants to change the shoes, they can swipe until they like the shoe)
