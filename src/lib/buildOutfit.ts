@@ -30,15 +30,19 @@ export function buildOutfit2(
     //TODO: if raining, select a waterproof shoe
     //TODO Add accessories (& umbrella if raining)
     
-    const chosen_outfit: ClosetItem[] =  outfits[Math.floor(Math.random() * outfits.length)];// pick one at random
+    const chosen_outfit: ClosetItem[] =  outfits[Math.floor(Math.random() * outfits.length)];
+    // pick one at random
     
-    // might need outerwear
+    // check if we need outerwear
     if (temperature < 60 ) {
         const coats = closet.filter((item) => item.type == "outerwear" && !item.waterproof);  
         const fit_warmth = computeOutfitWarmth(chosen_outfit)
         let gap = max_warmth - fit_warmth
         if (gap>0) { //if base outfit isn't warm enough - we grab a coat
-            let coat = coats[Math.floor(Math.random()*coats.length)] // random atm TODO add logic
+            //let coat = coats[Math.floor(Math.random()*coats.length)] // random atm TODO add logic
+            let coat = coats.reduce((best, current) => //chose the coat closest to warmth gap
+            Math.abs(current.warmth - gap) < Math.abs(best.warmth - gap) ? current : best
+            );
             chosen_outfit.push(coat);
         } 
     }

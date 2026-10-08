@@ -1,3 +1,5 @@
+Project url: https://closet-app-a3qu.vercel.app/
+
 Problem Statement: 
 - Deciding what to wear every morning is a small but real source of stress and looking good tends to set a confident tone for the day. This app removes that decision by pulling today’s weather and matching it against a curated closet of items to suggest one complete outfit. (This MVP is tailored to my style and my closet and location)
 - For MVP, the closet has a preset of items (future versions will have feature of adding more items) 

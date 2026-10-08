@@ -1,7 +1,6 @@
 import './OutfitResult.css'
 import type { ClosetItem } from '../types/ClosetItem.ts';
-
-//for V2 -> with layering ; CLAUDE generated code
+import { useState } from 'react';
 
 type props = { 
     outfit: ClosetItem[] | null;
@@ -40,18 +39,31 @@ export function groupOutfit(outfit: ClosetItem[]): OutfitSections {
  
 
 function Section({ items }: { items: ClosetItem[] }) {
+  const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
+  
   return (
     <>
       {items.map((item) => (
-        <img key={item.id} src={item.image_url} alt={item.description} className="item" />
+        <div key={item.id} className="card">
+          <img src={item.image_url} alt={item.description} onClick={() => { 
+            setSelectedItem(item)
+            console.log(selectedItem)
+            }}/>
+          
+          {/* hidden until hovered on */}
+          <div className="card-overlay">
+            {item.description}
+          </div>
+        </div>
       ))}
     </>
   );
 }
 
-export default function OutfitResult({outfit, setPage}: props) {  
+export default function OutfitResult({outfit, setPage}: props) {   
     if (!outfit) return <p>No outfit found for this weather.</p>;
     const s = groupOutfit(outfit);
+    console.log(s);
     
     return ( 
         <div>
@@ -60,21 +72,30 @@ export default function OutfitResult({outfit, setPage}: props) {
                 setPage("home")
             }}> home </a>
        
-        <div className="outfit-layout">
-        <div className="section outerwear"><Section items={s.outerwear} /></div>
+          <div className="outfit-box"> 
 
-      {s.hasDress ? (
-        <div className="section dress"><Section items={[...s.top, ...s.bottom]} /></div>
-      ) : (
-        <>
-          <div className="section top"><Section items={s.top} /></div>
-          <div className="section bottom"><Section items={s.bottom} /></div>
-        </>
-      )}
+            <div className="columnContainer">
+              <Section items={s.outerwear} /> 
+              <Section items={s.bag} /> 
+            </div>
 
-      <div className="section bag"><Section items={s.bag} /></div>
-      <div className="section feet"><Section items={s.feet} /></div>
-    </div>
+            <div className="columnContainer middle">
+              {s.hasDress ? ( 
+                  <Section items={[...s.top, ...s.bottom]} /> 
+                ) : (
+                <> 
+                  <Section items={s.top}/> 
+                  <Section items={s.bottom} /> 
+                </>
+              )}
+            </div>
+
+            <div className="columnContainer"> 
+                <Section items={s.feet} /> 
+            </div>
+          
+      </div>
+
      </div>
     )
 }

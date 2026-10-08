@@ -6,8 +6,7 @@
 │           │  bottom  │   feet   │
 └───────────┴──────────┴──────────┘
 
-*/
-
+*/ 
 
 .home_btn {
     position: absolute; 
@@ -18,40 +17,50 @@
     color:#550000;
 } 
 
-.outfit-layout {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    "outerwear top    bag"
-    "outerwear bottom feet";
-  gap: 16px;
-  height: 90vh;
-  padding: 16px;
-  box-sizing: border-box;
-}
+.outfit-box {
+  display:flex;
+  flex-direction: row;  /* Left | Mid | Right*/
+  height: 100vh;
+} 
 
-.outerwear { grid-area: outerwear; }
-.top       { grid-area: top; }
-.bottom    { grid-area: bottom; }
-.bag       { grid-area: bag; }
-.feet      { grid-area: feet; }
-.dress     { grid-row: 1 / 3; grid-column: 2; }
-
-
-.section {
+.columnContainer { 
+  flex: 1; /* each section gets equal width */
   display: flex;
+  flex-direction: column; /* images will stack vertically */ 
   justify-content: center;
-  align-items: center;
-  min-height: 0;
-  min-width: 0;
+}
+/* more images in the middle section - make it grid style */
+.columnContainer.middle { 
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* 2 img per row */ 
+  align-content: center;
 }
 
-.item {
-  flex: 1;
-  min-width: 0;
+.card img {
+  width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
 }
 
- 
+.card { 
+  transition: box-shadow 0.2s;
+  border-radius: 20px; 
+  max-height: 40vh; 
+  position: relative; /* position for the label/overlay */
+  /* justify-content: center; imgs aligned center horizontally */
+}
+
+.card:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-overlay {
+  opacity: 0;
+  position: absolute;
+  bottom: 5px;
+  transition: opacity 0.3s;
+}
+.card:hover .card-overlay{
+  opacity: 1;
+}

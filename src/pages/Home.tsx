@@ -29,8 +29,7 @@ export default function Home({setPage, setOutfit} : props) {
     } 
 
     async function loadWeather() {
-        const weather = await getWeather();
-        console.log(weather);
+        const weather = await getWeather(); 
         setWeather(weather);
     }
 
@@ -44,7 +43,7 @@ export default function Home({setPage, setOutfit} : props) {
 
                 <div className="location_box"> 
                     <img className="location_icon" src="/location_icon.png" alt="location icon"/>
-                    <div className="location_text"> New York City </div>
+                    <div className="location_text"> {weather?.location} </div>
                 </div>
 
                 <div className="weather_box">

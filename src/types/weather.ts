@@ -6,11 +6,4 @@ export interface Weather {
     humidity: number; // %
     wind: number; // %
 }
-
-// let mockLocation: Weather = {
-//     location: "New York City",
-//     temperature: 42,
-//     precipitation: 0,
-//     humidity: 33,
-//     wind: 8
-// };
+ 

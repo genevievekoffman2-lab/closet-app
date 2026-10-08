@@ -4,18 +4,30 @@ import type { Weather } from "../types/weather";
 
 /** TODO Get Users Current Location */
 
-// Default coordinates for testing — New York City
-const DEFAULT_LATITUDE = 40.7128;
-const DEFAULT_LONGITUDE = -74.006;
+type Location = {
+    name: string; 
+    latitude: number;
+    longitude: number;
+};
 
-//white horse canada -- FREEZING
+/* const nyc: Location = {
+    name: "New York City",
+    latitude: 40.7851,
+    longitude: -73.9683
+}; */
+
+const white_horse_CA: Location = {
+    name: "White Horse, Canada",
+    latitude: 60.7212,
+    longitude: -135.0568
+}; 
 
 //costa rica -- HOT
 
 /** Get Temperature based on location */
 export async function getWeather(
-    latitude: number = DEFAULT_LATITUDE,
-    longitude: number = DEFAULT_LONGITUDE
+    latitude: number = white_horse_CA.latitude,
+    longitude: number = white_horse_CA.longitude
 ): Promise<Weather> {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&hourly=precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph`
     const response = await fetch(url);
@@ -29,10 +41,8 @@ export async function getWeather(
     );
     const chanceOfRain = data.hourly.precipitation_probability[currentHourIndex] ?? 0;
 
-
-
     let currentWeather: Weather = {
-        location: "New York City", //TODO: hardcoded until grabbing users loc is setup
+        location: white_horse_CA.name,  
         temperature: data.current.temperature_2m,
         precipitation: chanceOfRain,
         humidity: data.current.relative_humidity_2m,

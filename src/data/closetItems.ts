@@ -23,6 +23,7 @@ export const closet: ClosetItem[] = [
   { id: "2-outer", description: "Raincoat", type: "outerwear", warmth: 0.5, waterproof: true, image_url: "/closetItems/rains_neutral_raincoat.png" },
   { id: "3-outer", description: "Quilted Coat", type: "outerwear", warmth: 0.6, waterproof: false, image_url: "/closetItems/barbour_kilnwick_quilted_jacket.png", tags:["brand:Barbour"]},
   { id: "4-outer", description: "Bomber Jacket", type: "outerwear", warmth: 0.6, waterproof: false, image_url: "/closetItems/Dark_beige_jacket.png" },
+  { id: "5-outer", description: "Cape Jacket", type: "outerwear", warmth: 0.3, waterproof: false, image_url: "/closetItems/cape_jacket.png" },
 
   { id: "1-top", description: "White Blouse", type: "primary", occupies: ["top:1"], requires: [], warmth: 0.1, waterproof: false, image_url: "/closetItems/white_light_blouse.png", tags:["color:white"] },
   { id: "2-top", description: "Knit Sweater", type: "primary", occupies: ["top:2"], requires: [], warmth: 0.4, waterproof: false, image_url: "/closetItems/white_knit_pullover.png" },
@@ -37,7 +38,7 @@ export const closet: ClosetItem[] = [
   { id: "8-top", description: "Striped Longsleeve", type: "primary", occupies: ["top:1", "top:2"], requires: [], warmth: 0.3, waterproof: false, image_url: "/closetItems/oversized_blue_striped_longsleeve.png",tags: ["pattern:striped", "color:blue", "color:white"] },
 
 
-  { id: "0-btm", description: "Black Tights", type: "primary", occupies: ["bottom:0", "feet:0"], requires: ["bottom:1"], warmth: 0.2, waterproof:false, image_url: "/closetItems/black_tights.png"},
+  { id: "0-btm", description: "Black Tights", type: "primary", occupies: ["bottom:0", "feet:1"], requires: ["bottom:1"], warmth: 0.2, waterproof:false, image_url: "/closetItems/black_tights.png"},
   { id: "1-btm", description: "Plaid Mini Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.4, waterproof: false, image_url: "/closetItems/plaid_skirt.png" },
   { id: "2-btm", description: "Leather Shorts", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/br_leather_shorts.png" },
   { id: "3-btm", description: "Jeans", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.4, waterproof: false, image_url: "/closetItems/light_denim_jeans.png" , tags: ["pattern:solid", "color:blue"]},
@@ -46,7 +47,7 @@ export const closet: ClosetItem[] = [
   { id: "5.5-btm", description: "Beige Slacks", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/beige_slacks.png" , tags: ["pattern:solid", "color:beige"]},
 
    { id: "6-btm", description: "Micro Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.1, waterproof: false, image_url: "/closetItems/micro_grey_skirt.png", tags: ["pattern:solid", "color:gray"] },
-   { id: "7-btm", description: "Sheer Tights", type: "primary", occupies: ["bottom:0", "feet:0"], requires: ["bottom:1"], warmth: 0.2, waterproof: false, image_url: "/closetItems/sheer_tights.png" },
+   { id: "7-btm", description: "Sheer Tights", type: "primary", occupies: ["bottom:0", "feet:1"], requires: ["bottom:1"], warmth: 0.2, waterproof: false, image_url: "/closetItems/sheer_tights.png" },
 
   { id: "1-ft", description: "Black Flats", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/black_ballet_flats.png" },
   { id: "2-ft", description: "Red Kitten Heels", type: "primary", occupies: ["feet:2"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/red_kitten_heels.png" },
