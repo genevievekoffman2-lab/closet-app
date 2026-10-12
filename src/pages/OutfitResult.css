@@ -47,20 +47,15 @@
   transition: box-shadow 0.2s;
   border-radius: 20px; 
   max-height: 40vh; 
-  position: relative; /* position for the label/overlay */
+  /* position: relative; position for the label/overlay */
   /* justify-content: center; imgs aligned center horizontally */
 }
 
 .card:hover {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
-
-.card-overlay {
-  opacity: 0;
-  position: absolute;
-  bottom: 5px;
-  transition: opacity 0.3s;
-}
+ 
 .card:hover .card-overlay{
   opacity: 1;
 }
+

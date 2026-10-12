@@ -1,6 +1,8 @@
 import './OutfitResult.css'
 import type { ClosetItem } from '../types/ClosetItem.ts';
 import { useState } from 'react';
+import { Carousel } from "../components/carousel.tsx";
+import { fetchOptions } from '../lib/outfitUtils.ts';
 
 type props = { 
     outfit: ClosetItem[] | null;
@@ -37,33 +39,61 @@ export function groupOutfit(outfit: ClosetItem[]): OutfitSections {
   return s;
 }
  
-
 function Section({ items }: { items: ClosetItem[] }) {
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
-  
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [itemOptions, setItemOptions] = useState<ClosetItem[] | null>(null);
+
+  const handleImageClick = async (item: ClosetItem) => {
+    setSelectedItem(item);
+    setItemOptions(null);      // clear options from a previous item
+    setShowOverlay(true);
+
+    try {
+      // fetch options to display
+      const options = await fetchOptions(item);
+      setItemOptions(options);
+      console.log(options)
+    } catch (err) {
+      console.error("Failed to fetch options", err);
+    }
+  };
+
   return (
     <>
-      {items.map((item) => (
-        <div key={item.id} className="card">
-          <img src={item.image_url} alt={item.description} onClick={() => { 
-            setSelectedItem(item)
-            console.log(selectedItem)
-            }}/>
-          
-          {/* hidden until hovered on */}
-          <div className="card-overlay">
-            {item.description}
+      {items.map((item) => {
+        const isSelected = showOverlay && selectedItem?.id === item.id;
+        const todoAlert = () => alert("Logic Coming Soon");
+
+        return (
+          <div key={item.id} className="card">
+            {isSelected && itemOptions ? (
+              <div onClick={()=>setShowOverlay(false)}>
+                {itemOptions ? 
+                  <>
+                    <button className="card-action card-action-left" onClick={() => {/* cancel */ todoAlert()}}>✕</button>
+                    <button className="card-action card-action-right" onClick={() => {/* confirm */todoAlert() }}>✓</button>
+
+                    < Carousel items={itemOptions}/> 
+                  </>
+                  : 
+                  <p>Loading…</p>} 
+              </div>
+            ) : (
+              <img src={item.image_url} alt={item.description} onClick={() => handleImageClick(item)}/>  
+            )}
           </div>
-        </div>
-      ))}
+        )})}
+       
+         
+
     </>
   );
 }
 
 export default function OutfitResult({outfit, setPage}: props) {   
     if (!outfit) return <p>No outfit found for this weather.</p>;
-    const s = groupOutfit(outfit);
-    console.log(s);
+    const s = groupOutfit(outfit); 
     
     return ( 
         <div>

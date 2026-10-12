@@ -1,0 +1,22 @@
+/* Claude AI generated carousel css */
+.carousel {  
+  display: flex;
+  flex-direction: row;
+  align-items: center;      /* vertically centers the arrows next to the image */
+  justify-content: center;
+  gap: 8px;
+}
+ 
+.carousel-item img {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;   /* scales the image to fit without cropping or stretching */
+}
+  
+.carousel-btn {
+  all: unset;          /* wipes border, background, padding, font, etc. */
+  cursor: pointer;
+  font-size: 30px; 
+  padding: 4px 8px;
+  color: #333;
+}

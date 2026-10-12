@@ -45,6 +45,7 @@ export const closet: ClosetItem[] = [
   { id: "4-btm", description: "Polka Dot Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/polka_dot_maxi_skirt.png", tags: ["pattern:polka dot", "color:black", "color:white"] },
   { id: "5-btm", description: "Black Slacks", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/black_slacks.png" , tags: ["pattern:solid", "color:black"]},
   { id: "5.5-btm", description: "Beige Slacks", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.2, waterproof: false, image_url: "/closetItems/beige_slacks.png" , tags: ["pattern:solid", "color:beige"]},
+  { id: "6-btm", description: "Corduroy Pants", type: "primary", occupies: ["bottom:0", "bottom:1"], requires: [], warmth: 0.5, waterproof: false, image_url: "/closetItems/brown_corduroy_pants.png" , tags: ["pattern:solid", "color:brown"]},
 
    { id: "6-btm", description: "Micro Skirt", type: "primary", occupies: ["bottom:1"], requires: [], warmth: 0.1, waterproof: false, image_url: "/closetItems/micro_grey_skirt.png", tags: ["pattern:solid", "color:gray"] },
    { id: "7-btm", description: "Sheer Tights", type: "primary", occupies: ["bottom:0", "feet:1"], requires: ["bottom:1"], warmth: 0.2, waterproof: false, image_url: "/closetItems/sheer_tights.png" },
