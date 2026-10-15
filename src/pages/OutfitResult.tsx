@@ -16,17 +16,19 @@ export interface OutfitSections {
   bottom: ClosetItem[];
   feet: ClosetItem[];
   bag: ClosetItem[];
+  accessories: ClosetItem[]; // non-bag accessories
   hasDress: boolean;
 }
 
  // splits the outfits item into sections so we can present by them
 export function groupOutfit(outfit: ClosetItem[]): OutfitSections {
-  const s: OutfitSections = { outerwear: [], top: [], bottom: [], feet: [], bag: [], hasDress: false };
+  const s: OutfitSections = { outerwear: [], top: [], bottom: [], feet: [], bag: [], accessories: [], hasDress: false };
 
   for (const item of outfit) {
     if (item.type === "outerwear") s.outerwear.push(item);
     else if (item.type === "accessory") {
-      if (item.category === "bag") s.bag.push(item); // other accessories ignored for now
+      if (item.category === "bag") s.bag.push(item);
+      else s.accessories.push(item);
     } else {
       const coversTop = item.occupies.some((slot) => slot.startsWith("top:"));
       const coversBottom = item.occupies.some((slot) => slot.startsWith("bottom:"));
@@ -115,7 +117,8 @@ export default function OutfitResult({outfit, setOutfit, setPage}: props) {
 
             <div className="columnContainer">
               <Section items={s.outerwear} onSwap={swap} /> 
-              <Section items={s.bag} onSwap={swap} /> 
+              <Section items={s.bag} onSwap={swap} />
+              <Section items={s.accessories} onSwap={swap} />
             </div>
 
             <div className="columnContainer middle">

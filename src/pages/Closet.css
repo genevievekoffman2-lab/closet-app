@@ -19,6 +19,28 @@ html, body {
     padding: 40px;
 }
 
+.filter_row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+.filter_btn {
+    background: #fff;
+    color: #550000;
+    border: 0;
+    border-radius: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.filter_btn.active {
+    background: #550000;
+    color: #fff;
+}
+
 .closet_grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

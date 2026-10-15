@@ -3,15 +3,28 @@ import './Closet.css'
 import type { ClosetItem } from "../types/ClosetItem.ts"
 import { closet } from "../data/closetItems";
 
-//TODO add filtering
-
 type props = {
     setPage: (page: "home" | "closet" | "result") => void;
 };
 
+const FILTERS = ["All", "Tops", "Bottoms", "Dresses", "Shoes", "Outerwear", "Accessories"];
+
+// category from type + zones (same split as groupOutfit)
+function getCategory(item: ClosetItem): string {
+    if (item.type === "outerwear") return "Outerwear";
+    if (item.type === "accessory") return "Accessories";
+    const top = item.occupies.some((s) => s.startsWith("top:"));
+    const bottom = item.occupies.some((s) => s.startsWith("bottom:"));
+    if (top && bottom) return "Dresses";
+    if (top) return "Tops";
+    if (bottom) return "Bottoms";
+    return "Shoes";
+}
+
 export default function Closet({setPage} : props) {
     const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
+    const [filter, setFilter] = useState("All");
 
 
     return (
@@ -21,9 +34,16 @@ export default function Closet({setPage} : props) {
                 setPage("home")
             }}> home </a> 
             <p className="title"> My Closet </p>
+            <div className="filter_row">
+                {FILTERS.map((f) => (
+                    <button key={f} className={f === filter ? "filter_btn active" : "filter_btn"} onClick={() => setFilter(f)}>
+                        {f}
+                    </button>
+                ))}
+            </div>
             <div className="closet_grid">
-                {closet.map((closet_item) => (
-                    <div className="closet_box" onClick={() => {
+                {closet.filter((item) => filter === "All" || getCategory(item) === filter).map((closet_item) => (
+                    <div key={closet_item.id} className="closet_box" onClick={() => {
                         setShowOverlay(true);
                         setSelectedItem(closet_item)
                         }}> 

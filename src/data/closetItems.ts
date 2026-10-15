@@ -7,8 +7,18 @@ export const closet: ClosetItem[] = [
   { id: "1-accessory", description: "Pearl Earrings", type: "accessory", category: "ear", warmth: 0, waterproof: false, image_url: "/closetItems/pearl_earrings.png" },
   { id: "2-accessory", description: "Black Headband", type: "accessory", category: "head", warmth: 0, waterproof: false, image_url: "/closetItems/black_headband.png", tags: ["color:black"] },
   { id: "3-accessory", description: "Silk Scarf", type: "accessory", category: "neck", warmth: 0, waterproof: false, image_url: "/closetItems/silk_scarf_stripe.png", tags: ["pattern:striped", "color:orange", "color:brown", "material:silk"] },
-  { id: "4-accessory", description: "Black Sunglasses", type: "accessory", category: "eyes", warmth: 0, waterproof: false, image_url: "/closetItems/black_sunglasses.png", tags: ["color:black"] },
+  { id: "4-accessory", description: "Black Sunglasses", type: "accessory", category: "eyes", warmth: 0, waterproof: false, image_url: "/closetItems/black_sunglasses.png", tags: ["color:black", "weather:sunshine"] },
   { id: "5-accessory", description: "Umbrella", type: "accessory", category: "other", warmth: 0, waterproof: true, image_url: "/closetItems/umbrella.png", tags:["weather:rain"]},
+  { id: "6-accessory", description: "Large Beads Necklace", type: "accessory", category: "neck", warmth: 0, waterproof: false, image_url: "/closetItems/Bowie_Necklace_Large_Beads.png", tags:["color:green"] },
+  { id: "7-accessory", description: "Leapord Hat", type: "accessory", category: "head", warmth: 0, waterproof: false, image_url: "/closetItems/cheetah_leopard_cadet_hat.png", tags:["pattern:leopard"]},
+  { id: "8-accessory", description: "Claw Clip", type: "accessory", category: "head", warmth: 0, waterproof: false, image_url: "/closetItems/polka_dot_claw_clip.png" , tags: ["pattern:polka dot", "color:red", "color:white"]},
+  // { id: "9-accessory", description: "", type: "accessory", category: "ear", warmth: 0, waterproof: false, image_url: "/closetItems/pearl_earrings.png" },
+  // { id: "10-accessory", description: "", type: "accessory", category: "ear", warmth: 0, waterproof: false, image_url: "/closetItems/pearl_earrings.png" },
+  // { id: "11-accessory", description: "", type: "accessory", category: "ear", warmth: 0, waterproof: false, image_url: "/closetItems/pearl_earrings.png" },
+  // { id: "12-accessory", description: "", type: "accessory", category: "ear", warmth: 0, waterproof: false, image_url: "/closetItems/pearl_earrings.png" },
+
+
+
 
   { id: "1-bag", description: "Navy Tote", type: "accessory", category: "bag", warmth: 0, waterproof: false, image_url: "/closetItems/longchamp_navy_tote.png", tags: ["pattern:solid", "color:navy", "brand:longchamp"] },
   { id: "2-bag", description: "Red Handbag", type: "accessory", category: "bag", warmth: 0, waterproof: false, image_url: "/closetItems/mini_red_leather_bag.png", tags: ["pattern:solid", "color:red"] },
