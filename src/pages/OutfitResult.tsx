@@ -6,6 +6,7 @@ import { fetchOptions } from '../lib/outfitUtils.ts';
 
 type props = { 
     outfit: ClosetItem[] | null;
+    setOutfit: (outfit: ClosetItem[] | null) => void;
     setPage: (page: "home" | "closet" | "result") => void;
 };
 
@@ -39,14 +40,16 @@ export function groupOutfit(outfit: ClosetItem[]): OutfitSections {
   return s;
 }
  
-function Section({ items }: { items: ClosetItem[] }) {
+function Section({ items, onSwap }: { items: ClosetItem[]; onSwap: (oldItem: ClosetItem, newItem: ClosetItem) => void }) {
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
   const [showOverlay, setShowOverlay] = useState(false);
   const [itemOptions, setItemOptions] = useState<ClosetItem[] | null>(null);
+  const [index, setIndex] = useState(0); // which option the carousel is showing
 
   const handleImageClick = async (item: ClosetItem) => {
     setSelectedItem(item);
     setItemOptions(null);      // clear options from a previous item
+    setIndex(0);               // start on the selected item itself
     setShowOverlay(true);
 
     try {
@@ -63,7 +66,6 @@ function Section({ items }: { items: ClosetItem[] }) {
     <>
       {items.map((item) => {
         const isSelected = showOverlay && selectedItem?.id === item.id;
-        const todoAlert = () => alert("Logic Coming Soon");
 
         return (
           <div key={item.id} className="card">
@@ -71,10 +73,13 @@ function Section({ items }: { items: ClosetItem[] }) {
               <div onClick={()=>setShowOverlay(false)}>
                 {itemOptions ? 
                   <>
-                    <button className="card-action card-action-left" onClick={() => {/* cancel */ todoAlert()}}>✕</button>
-                    <button className="card-action card-action-right" onClick={() => {/* confirm */todoAlert() }}>✓</button>
+                    {/* both buttons bubble up to the wrapper div, which closes the carousel */}
+                    <button className="card-action card-action-left">✕</button>
+                    <button className="card-action card-action-right" onClick={() => {
+                      if (selectedItem) onSwap(selectedItem, itemOptions[index]);
+                    }}>✓</button>
 
-                    < Carousel items={itemOptions}/> 
+                    < Carousel items={itemOptions} index={index} setIndex={setIndex}/>
                   </>
                   : 
                   <p>Loading…</p>} 
@@ -91,10 +96,14 @@ function Section({ items }: { items: ClosetItem[] }) {
   );
 }
 
-export default function OutfitResult({outfit, setPage}: props) {   
+export default function OutfitResult({outfit, setOutfit, setPage}: props) {
     if (!outfit) return <p>No outfit found for this weather.</p>;
-    const s = groupOutfit(outfit); 
-    
+    const s = groupOutfit(outfit);
+
+    // replace the exact object (not by id) so duplicate ids can't swap the wrong item
+    const swap = (oldItem: ClosetItem, newItem: ClosetItem) =>
+        setOutfit(outfit.map((i) => (i === oldItem ? newItem : i)));
+
     return ( 
         <div>
             <a href="#" className="home_btn" onClick={(e) => {
@@ -105,23 +114,23 @@ export default function OutfitResult({outfit, setPage}: props) {
           <div className="outfit-box"> 
 
             <div className="columnContainer">
-              <Section items={s.outerwear} /> 
-              <Section items={s.bag} /> 
+              <Section items={s.outerwear} onSwap={swap} /> 
+              <Section items={s.bag} onSwap={swap} /> 
             </div>
 
             <div className="columnContainer middle">
               {s.hasDress ? ( 
-                  <Section items={[...s.top, ...s.bottom]} /> 
+                  <Section items={[...s.top, ...s.bottom]} onSwap={swap} /> 
                 ) : (
                 <> 
-                  <Section items={s.top}/> 
-                  <Section items={s.bottom} /> 
+                  <Section items={s.top} onSwap={swap} /> 
+                  <Section items={s.bottom} onSwap={swap} /> 
                 </>
               )}
             </div>
 
             <div className="columnContainer"> 
-                <Section items={s.feet} /> 
+                <Section items={s.feet} onSwap={swap} /> 
             </div>
           
       </div>

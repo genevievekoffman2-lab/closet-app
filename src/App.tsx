@@ -15,7 +15,7 @@ function App() {
   if (page == "closet") 
     return <Closet setPage={setPage} />
   if (page == "result" && outfit) 
-    return <OutfitResult outfit={outfit} setPage={setPage}/>
+    return <OutfitResult outfit={outfit} setOutfit={setOutfit} setPage={setPage}/>
   return <Home setPage={setPage} setOutfit={setOutfit} />
   
 }

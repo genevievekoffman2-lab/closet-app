@@ -13,7 +13,9 @@ type Outfit = PrimaryItem[];
 
 function isValid(outfit: Outfit, minWarmth: number, maxWarmth: number): boolean {
   const occupied = outfit.flatMap((item) => item.occupies);
-  const warmth = outfit.reduce((sum, item) => sum + item.warmth, 0);
+  const warmth = outfit
+    .filter((item) => !item.occupies.every((slot) => slot.startsWith("feet:"))) //feet doesn't contribute to warmth
+    .reduce((sum, item) => sum + item.warmth, 0);
 
   const hasAllZones = (["top", "bottom", "feet"] as ClothingZone[]).every((zone) =>
     occupied.some((slot) => slot.startsWith(zone + ":"))

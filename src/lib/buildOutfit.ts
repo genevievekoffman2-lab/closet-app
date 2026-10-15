@@ -12,22 +12,23 @@ export function buildOutfit2(
     wind: number
 ) { 
     const isRaining = precipitation > 50;
-    if (isRaining) {
-        console.log('raining...TODO');
-    }
+    // raining: shoes (feet:2) and outerwear must be waterproof
+    // not raining: skip anything rain-only
+    const rainOk = (item: ClosetItem) => isRaining
+        ? item.waterproof || !(item.type == "outerwear" || (item.type == "primary" && item.occupies.includes("feet:2")))
+        : !item.tags?.includes("weather:rain");
 
     //determines warmth window 
     let warmth_ranges = getWarmthRanges(temperature, humidity, wind) 
     let min_warmth = warmth_ranges[0] * 2 //*2 because it considers both top & btm coverage
     let max_warmth = warmth_ranges[1] * 2 
 
-    let primaryItems = closet.filter((item)=> item.type == "primary");
+    let primaryItems = closet.filter((item)=> item.type == "primary").filter(rainOk);
     // generate a list of possible outfits (primary outfit) meeting min total warmth
     const outfits = findOutfits(min_warmth, max_warmth, primaryItems);
  
     if (outfits.length === 0) return null; // nothing fits the range
     
-    //TODO: if raining, select a waterproof shoe
     //TODO Add accessories (& umbrella if raining)
     
     const chosen_outfit: ClosetItem[] =  outfits[Math.floor(Math.random() * outfits.length)];
@@ -35,7 +36,7 @@ export function buildOutfit2(
     
     // check if we need outerwear
     if (temperature < 60 ) {
-        const coats = closet.filter((item) => item.type == "outerwear" && !item.waterproof);  
+        const coats = closet.filter((item) => item.type == "outerwear" && rainOk(item));  
         const fit_warmth = computeOutfitWarmth(chosen_outfit)
         let gap = max_warmth - fit_warmth
         if (gap>0) { //if base outfit isn't warm enough - we grab a coat
