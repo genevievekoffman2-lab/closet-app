@@ -29,6 +29,35 @@ Tech stack:
 
 
 
-# VERSION 3 (working on now)
+# VERSION 3  
 - allow user to accept or reject a piece (lets say they dont want tights with the presented outfit, user can 'x' it)
 - allow user to swipe a piece (lets say user likes fit but wants to change the shoes, they can swipe until they like the shoe)
+- adopting Claude
+
+
+# SupaBase Model Schema
+item Table: one row per piece of clothing or accessory
+
+    id: unique ID, generated automatically (primary key)
+    type: primary, outerwear, or accessory (required, only those three allowed)
+    description: what the item is, e.g. “dark wash jeans” (required)
+    image_url: link to the item’s photo
+    warmth: decimal number, defaults to 0
+    waterproof: true or false, defaults to false
+    occupies: list of slots this item fills, e.g. bottom:0, bottom:1 (empty list if none)
+        (slot is in form 'zone:depth' ex: 'top:1')
+    requires: list of slots other items must fill (empty list if none)
+    category: neck, wrist, bag, etc. Only for accessories, and every accessory must have one.
+
+tags Table: one row per possible tag
+
+    id: unique ID (primary key)
+    key: what kind of tag, ex: color, brand, season
+    value: the tag itself, ex: navy, burberry, summer
+    No two tags can have the same key and value.
+
+item_tags Table: links items to their tags, one row per item–tag pair
+
+    item_id: points to an item
+    tag_id: points to a tag
+    the pair together is the primary key, so an item can’t have the same tag twice.
