@@ -1,6 +1,5 @@
 // contains helper func for outfits
 
-import { closet } from "../data/closetItems";
 import type { ClosetItem, PrimaryItem } from "../types/ClosetItem";
 
 
@@ -15,7 +14,7 @@ function sameSlots(a: PrimaryItem, b: PrimaryItem): boolean {
 // given an item, it grabs all the items it can be replaced with (type or filters further)
 // ex: if accessory, for now, it grabs all accessories
 // if type = primary, it needs to make sure the occupies slot is the same (sneakers and blouses are both primary)
-export function fetchOptions(selectedItem: ClosetItem): ClosetItem[] {
+export function fetchOptions(selectedItem: ClosetItem, closet: ClosetItem[]): ClosetItem[] {
   
   const others = closet.filter((item) => {
     if (item.id === selectedItem.id) return false;

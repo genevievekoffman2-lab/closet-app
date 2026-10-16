@@ -1,5 +1,5 @@
 export type ClothingZone = "top" | "bottom" | "feet";// | "accessory" | "outerwear";
-type AccessoryCategory = "head" | "ear" | "neck" | "wrist" | "waist" | "bag" | "eyes" | "other";
+export type AccessoryCategory = "head" | "ear" | "neck" | "wrist" | "waist" | "bag" | "eyes" | "other";
 
 export type ClosetItem = PrimaryItem | OuterwearItem | AccessoryItem
 

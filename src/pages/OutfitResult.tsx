@@ -5,6 +5,7 @@ import { Carousel } from "../components/carousel.tsx";
 import { fetchOptions } from '../lib/outfitUtils.ts';
 
 type props = { 
+    closet: ClosetItem[];
     outfit: ClosetItem[] | null;
     setOutfit: (outfit: ClosetItem[] | null) => void;
     setPage: (page: "home" | "closet" | "result") => void;
@@ -42,7 +43,7 @@ export function groupOutfit(outfit: ClosetItem[]): OutfitSections {
   return s;
 }
  
-function Section({ items, onSwap }: { items: ClosetItem[]; onSwap: (oldItem: ClosetItem, newItem: ClosetItem) => void }) {
+function Section({ items, closet, onSwap }: { items: ClosetItem[]; closet: ClosetItem[]; onSwap: (oldItem: ClosetItem, newItem: ClosetItem) => void }) {
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
   const [showOverlay, setShowOverlay] = useState(false);
   const [itemOptions, setItemOptions] = useState<ClosetItem[] | null>(null);
@@ -56,7 +57,7 @@ function Section({ items, onSwap }: { items: ClosetItem[]; onSwap: (oldItem: Clo
 
     try {
       // fetch options to display
-      const options = await fetchOptions(item);
+      const options = await fetchOptions(item, closet);
       setItemOptions(options);
       console.log(options)
     } catch (err) {
@@ -98,7 +99,7 @@ function Section({ items, onSwap }: { items: ClosetItem[]; onSwap: (oldItem: Clo
   );
 }
 
-export default function OutfitResult({outfit, setOutfit, setPage}: props) {
+export default function OutfitResult({closet, outfit, setOutfit, setPage}: props) {
     if (!outfit) return <p>No outfit found for this weather.</p>;
     const s = groupOutfit(outfit);
 
@@ -116,24 +117,24 @@ export default function OutfitResult({outfit, setOutfit, setPage}: props) {
           <div className="outfit-box"> 
 
             <div className="columnContainer">
-              <Section items={s.outerwear} onSwap={swap} /> 
-              <Section items={s.bag} onSwap={swap} />
-              <Section items={s.accessories} onSwap={swap} />
+              <Section items={s.outerwear} closet={closet} onSwap={swap} /> 
+              <Section items={s.bag} closet={closet} onSwap={swap} />
+              <Section items={s.accessories} closet={closet} onSwap={swap} />
             </div>
 
             <div className="columnContainer middle">
               {s.hasDress ? ( 
-                  <Section items={[...s.top, ...s.bottom]} onSwap={swap} /> 
+                  <Section items={[...s.top, ...s.bottom]} closet={closet} onSwap={swap} /> 
                 ) : (
                 <> 
-                  <Section items={s.top} onSwap={swap} /> 
-                  <Section items={s.bottom} onSwap={swap} /> 
+                  <Section items={s.top} closet={closet} onSwap={swap} /> 
+                  <Section items={s.bottom} closet={closet} onSwap={swap} /> 
                 </>
               )}
             </div>
 
             <div className="columnContainer"> 
-                <Section items={s.feet} onSwap={swap} /> 
+                <Section items={s.feet} closet={closet} onSwap={swap} /> 
             </div>
           
       </div>

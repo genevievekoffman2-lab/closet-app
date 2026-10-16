@@ -4,8 +4,8 @@ import type { Weather } from "../types/weather";
 
 /** TODO Get Users Current Location */
 
-type Location = {
-    name: string; 
+export type Location = {
+    name: string;
     latitude: number;
     longitude: number;
 };
@@ -16,20 +16,17 @@ const nyc: Location = {
     longitude: -73.9683
 };
 
-// const white_horse_CA: Location = {
-//     name: "White Horse, Canada",
-//     latitude: 60.7212,
-//     longitude: -135.0568
-// }; 
+const white_horse_CA: Location = {
+    name: "White Horse, Canada",
+    latitude: 60.7212,
+    longitude: -135.0568
+};
 
-//costa rica -- HOT
+export const LOCATIONS = [nyc, white_horse_CA];
 
 /** Get Temperature based on location */
-export async function getWeather(
-    latitude: number = nyc.latitude,
-    longitude: number = nyc.longitude
-): Promise<Weather> {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&hourly=precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph`
+export async function getWeather(location: Location = nyc): Promise<Weather> {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&hourly=precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph`
     const response = await fetch(url);
     const data = await response.json(); 
 
@@ -42,7 +39,7 @@ export async function getWeather(
     const chanceOfRain = data.hourly.precipitation_probability[currentHourIndex] ?? 0;
 
     let currentWeather: Weather = {
-        location: nyc.name,  
+        location: location.name,
         temperature: data.current.temperature_2m,
         precipitation: chanceOfRain,
         humidity: data.current.relative_humidity_2m,

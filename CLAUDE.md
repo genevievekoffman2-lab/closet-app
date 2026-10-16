@@ -19,6 +19,29 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - `tags` use `key:value` format (e.g. `color:navy`, `pattern:striped`).
   - Tag keys in use: `color`, `pattern`, `material`, `brand`, `weather`, `length`.
   - `color:` / `pattern:` values should match `Color` / `Pattern` in `closetItemTags.ts`. Accessory matching compares exact strings.
+  
+## Database (Supabase)
+- Closet data lives in Supabase. Schema is in `supabase/migrations/`.
+- Tables:
+  - `items`: id (uuid), type, description, image_url, warmth (real), waterproof,
+    occupies (text[]), requires (text[]), category (accessories only, required for them)
+  - `tags`: id, key, value; unique (key, value). Stored lowercase.
+  - `item_tags`: join table (item_id, tag_id), cascade delete on both.
+- Item images are in the public Storage bucket `item-images`.
+- Schema changes go in a NEW migration file (`supabase migration new <name>`).
+  Never edit an existing migration and never change the schema in the dashboard.
+- Row Level Security: public read on all tables. No write policies yet, so writes
+  from the app need a login first (not built yet).
+- The service role key is only for scripts (`scripts/`), loaded from `.env.local`.
+  Never use it in frontend code.
+- In the app, tags are still `"key:value"` strings. Convert to and from rows
+  at the database boundary.
+
+## Current state
+- The app loads the closet from Supabase: `fetchCloset` in `src/lib/supabase.ts`, called once in `App` and passed down as a `closet` prop (`buildOutfit2` and `fetchOptions` take it as a parameter).
+- Frontend env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (in `.env.local` and Vercel).
+- `src/data/closetItems.ts` is no longer used by the app; kept until the Supabase switch is confirmed, then it will be removed.
+- `scripts/migrate-closet.ts` was a one-time migration of that file into Supabase.
 
 ## Warmth
 - `min_warmth` / `max_warmth` are **warmth values**, not degrees. Don't convert them.

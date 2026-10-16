@@ -1,6 +1,5 @@
 /** Build Outfit Logic for V2 using weighted warmths */
 
-import { closet } from "../data/closetItems"; 
 import type { ClosetItem } from "../types/ClosetItem.ts";
 import { getWarmthRanges } from "./getWarmthRange"; 
 import { findOutfits } from "./search";
@@ -9,6 +8,7 @@ import { pickRandom } from "./pickRandom";
 const NEUTRALS = ["black", "white", "cream", "ivory", "gray", "navy", "beige", "tan", "brown"];
 
 export function buildOutfit2(
+    closet: ClosetItem[],
     temperature: number,
     precipitation: number,
     humidity: number,
@@ -52,11 +52,11 @@ export function buildOutfit2(
     }
 
     // select accessories : random right now; TODO: add logic
-    let chosen_accessory = selectAccessorries();
+    let chosen_accessory = selectAccessorries(closet);
     chosen_outfit.push(chosen_accessory);
 
     // one more accessory, picked last so it can match everything above
-    const extra_accessory = selectAccessory(chosen_outfit);
+    const extra_accessory = selectAccessory(closet, chosen_outfit);
     if (extra_accessory) chosen_outfit.push(extra_accessory);
 
     return chosen_outfit;
@@ -74,7 +74,7 @@ function tagValues(items: ClosetItem[], key: string): string[] {
 // 2. all colors neutral -> accessory with a pattern or a non-neutral color
 // 3. otherwise -> accessory sharing a color with the outfit
 // returns undefined if nothing matches
-function selectAccessory(outfit: ClosetItem[]) {
+function selectAccessory(closet: ClosetItem[], outfit: ClosetItem[]) {
     const options = closet.filter((item) =>
         item.type == "accessory" && item.category != "bag" && !item.tags?.includes("weather:rain"));
     const patterns = tagValues(outfit, "pattern").filter((p) => p != "solid");
@@ -101,7 +101,7 @@ function computeOutfitWarmth(outfit: ClosetItem[]): number {
 }
 
 // based on the items in the existing outfit, we select appropriate accessories
-function selectAccessorries() {
+function selectAccessorries(closet: ClosetItem[]) {
     //if it is sunny -> we need sunglasses 
 
     // for now, pick a random bag 

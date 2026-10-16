@@ -1,9 +1,9 @@
 import { useState } from "react" 
 import './Closet.css'
 import type { ClosetItem } from "../types/ClosetItem.ts"
-import { closet } from "../data/closetItems";
 
 type props = {
+    closet: ClosetItem[];
     setPage: (page: "home" | "closet" | "result") => void;
 };
 
@@ -21,7 +21,7 @@ function getCategory(item: ClosetItem): string {
     return "Shoes";
 }
 
-export default function Closet({setPage} : props) {
+export default function Closet({closet, setPage} : props) {
     const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
     const [filter, setFilter] = useState("All");

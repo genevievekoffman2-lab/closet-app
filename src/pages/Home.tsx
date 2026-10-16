@@ -1,23 +1,25 @@
 import './Home.css'
-import { getWeather } from '../lib/weather';
+import { getWeather, LOCATIONS, type Location } from '../lib/weather';
 import { useState, useEffect } from 'react';
 import type { Weather } from '../types/weather';  
 import { buildOutfit2 } from '../lib/buildOutfit';
 import type { ClosetItem } from '../types/ClosetItem.ts';
 
 type props = {
+    closet: ClosetItem[];
     setPage: (page: "home" | "closet" | "result") => void;
     setOutfit: (outfit: ClosetItem[] | null) => void;
 };
 
-export default function Home({setPage, setOutfit} : props) {
+export default function Home({closet, setPage, setOutfit} : props) {
 
     const [weather, setWeather] = useState<Weather | null>(null);
+    const [showLocations, setShowLocations] = useState(false);
 
     function generateOutfitV2() {
         //V2
         if (weather != null) {
-            const outfitResult = buildOutfit2(weather.temperature, weather.precipitation, weather.humidity, weather.wind); 
+            const outfitResult = buildOutfit2(closet, weather.temperature, weather.precipitation, weather.humidity, weather.wind); 
             if (outfitResult == null) { // missing an item 
                 alert('outfit item missing')
                 return;
@@ -28,8 +30,8 @@ export default function Home({setPage, setOutfit} : props) {
         }
     } 
 
-    async function loadWeather() {
-        const weather = await getWeather(); 
+    async function loadWeather(location?: Location) {
+        const weather = await getWeather(location);
         setWeather(weather);
     }
 
@@ -42,9 +44,22 @@ export default function Home({setPage, setOutfit} : props) {
             <div className="container">
 
                 <div className="location_box"> 
-                    <img className="location_icon" src="/location_icon.png" alt="location icon"/>
+                    <img className="location_icon" src="/location_icon.png" alt="location icon" onClick={() => setShowLocations(!showLocations)}/>
                     <div className="location_text"> {weather?.location} </div>
                 </div>
+
+                {showLocations && (
+                    <div className="location_menu">
+                        {LOCATIONS.map((loc) => (
+                            <button key={loc.name} className={loc.name === weather?.location ? "location_btn active" : "location_btn"} onClick={() => {
+                                loadWeather(loc);
+                                setShowLocations(false);
+                            }}>
+                                {loc.name}
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 <div className="weather_box">
                 <img className="temp_img"

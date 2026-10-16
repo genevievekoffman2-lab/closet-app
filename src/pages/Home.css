@@ -33,6 +33,28 @@ html, body {
 .location_icon {
     max-height: 40px;
     object-fit: contain;
+    cursor: pointer;
+}
+
+.location_menu {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* same look as the closet filter buttons */
+.location_btn {
+    background: #fff;
+    color: #550000;
+    border: 0;
+    border-radius: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.location_btn.active {
+    background: #550000;
+    color: #fff;
 }
 
 .weather_box {
