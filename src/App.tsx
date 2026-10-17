@@ -4,11 +4,12 @@ import Home from './pages/Home'
 import Closet from './pages/Closet'
 import OutfitResult from './pages/OutfitResult'
 import Login from './pages/Login'
+import AddItem from './pages/AddItem'
 import type { ClosetItem } from './types/ClosetItem.ts'
 import type { Session } from '@supabase/supabase-js'
 import { fetchCloset, supabase } from './lib/supabase'
 
-type Page = "home" | "closet" | "result" | "login"
+type Page = "home" | "closet" | "result" | "login" | "add"
 
 function App() {
   const [page, setPage] = useState<Page>("home")
@@ -47,7 +48,8 @@ function App() {
   return (
     <>
       {authBar}
-      {page == "closet" ? <Closet closet={closet} setPage={setPage} />
+      {page == "add" && session ? <AddItem closet={closet} setPage={setPage} />
+        : page == "closet" ? <Closet closet={closet} setPage={setPage} signedIn={!!session} />
         : page == "result" && outfit ? <OutfitResult closet={closet} outfit={outfit} setOutfit={setOutfit} setPage={setPage}/>
         : <Home closet={closet} setPage={setPage} setOutfit={setOutfit} />}
     </>

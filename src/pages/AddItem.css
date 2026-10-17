@@ -1,0 +1,89 @@
+.add_form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+    color: #550000;
+}
+
+.add_form h3 {
+    margin: 0 0 10px;
+}
+
+.add_chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.add_preview {
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.add_text {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    font-size: 16px;
+    border: 0;
+    border-radius: 12px;
+}
+
+.add_swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    position: relative;
+}
+
+/* color name shown only while hovering */
+.add_swatch:hover::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    color: #550000;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.add_swatch.active {
+    outline: 3px solid #550000;
+    outline-offset: 2px;
+}
+
+.add_label {
+    margin: 12px 0 6px;
+}
+
+.add_check {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.add_submit {
+    padding: 12px;
+    font-size: 16px;
+}
+
+.add_submit:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

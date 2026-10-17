@@ -16,9 +16,12 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
   - `requires`: slots that must be filled by *other* items. One-directional: only the item that lists it needs it (e.g. tights require `bottom:1`, vests require `top:1`, socks require `feet:2`).
 - Pants occupy both `bottom:0` and `bottom:1` so they can't be worn with a skirt.
 - All shoes use `feet:2` so only one pair can be chosen.
+- Tights (`bottom:0` + `feet:1`) and socks (`feet:1`) both use `feet:1` on purpose, so they can't be worn together.
+- Dresses: one that can be worn over a top occupies `top:2` + `bottom:1`; one that can't occupies `top:1` + `bottom:1`.
 - `tags` use `key:value` format (e.g. `color:navy`, `pattern:striped`).
   - Tag keys in use: `color`, `pattern`, `material`, `brand`, `weather`, `length`.
   - `color:` / `pattern:` values should match `Color` / `Pattern` in `closetItemTags.ts`. Accessory matching compares exact strings.
+  - `Color` / `Pattern` are derived from the `COLORS` / `PATTERNS` const arrays there. Add new values to the arrays; UI lists (Add item swatches/chips) read from them.
   
 ## Database (Supabase)
 - Closet data lives in Supabase. Schema is in `supabase/migrations/`.
@@ -89,9 +92,15 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Umbrella (`weather:rain`) is excluded for now.
 
 ## UI
-- Pages (`Page` in `App.tsx`): `home`, `closet`, `result`, `login`. Navigation is `setPage`, no router.
+- Pages (`Page` in `App.tsx`): `home`, `closet`, `result`, `login`, `add`. Navigation is `setPage`, no router.
 - Auth bar (`.auth_bar` in `App.css`): fixed top-right on home, closet and result (not on login or the loading/error screens). Signed in: email + Sign out (`supabase.auth.signOut()`). Signed out: Log in → login page.
 - Login page (`Login.tsx`): email + password via `signInWithPassword`; success → Home, failure shows the error; Back button; no sign-up link. It renders before the closet loading check, so login works even if the closet fails to load.
+- Add item page (`AddItem.tsx`): reached from a "+ Add item" `filter_btn` at the end of the Closet filter row (signed in only). Page itself also gated (`page == "add" && session`). UI only: submit `console.log`s a `ClosetItem` (id `""`, image_url = local preview URL) plus `kind`; nothing is saved yet.
+  - Fields in order: photo (camera / library + preview), kind, description, colors (name shows on hover via CSS `::after`), pattern, details (warmth steps, waterproof, "Only wear in rain" → `weather:rain`, materials, brand with autocomplete from existing `brand:` tags), Advanced (raw occupies/requires, primary kinds only).
+  - Kinds come from `ITEM_KINDS` in `src/data/itemKinds.ts`: each sets type, occupies, requires, category, default warmth, and `keywords`. The last description word that's a keyword preselects the kind ("Sweater Vest" → vest) until the user picks one.
+  - Dress kind shows "Can you wear a top underneath?" (default no), which switches `top:1` ↔ `top:2`.
+  - Warmth steps: None 0, Light 0.2, Medium 0.4, Warm 0.6, Very warm 1.
+  - Tags come out lowercase `key:value`.
 - Home: clicking the location icon shows a row of buttons for `LOCATIONS` (`weather.ts`: New York City, White Horse). Picking one reloads the weather via `getWeather(location)`; the shown name comes from the returned `Weather`.
 - `OutfitResult.tsx` → `groupOutfit`: flex row. Left: outerwear, bag, other accessories. Middle: 2-col grid of top/bottom (one merged section for dresses). Right: feet.
 - Clicking an item opens a `Carousel` of options from `fetchOptions` (`outfitUtils.ts`): primary = identical `occupies`, accessory = same category, outerwear = any. The carousel index lives in `Section`.
@@ -105,7 +114,8 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Carousel options aren't validated yet: filter to swaps that keep zones covered, no slot conflicts, `requires` met (ignore warmth). Plan: same zones as the clicked item, then validity check.
 - Carousel doesn't apply Rain rules.
 - Umbrella when raining; `weather:sunshine` (sunglasses) isn't read yet.
-- Tag gaps: plaid/polka-dot and red/blue outfits often get no accessory; Leopard Hat and Cheetah Sneakers use `pattern:animal`, which doesn't match the `Pattern` type (`"animal print"`).
+- Tag gaps: plaid/polka-dot and red/blue outfits often get no accessory.
+- Add item: save to Supabase (upload photo to `item-images`, insert item + tags). No `waist` kind yet; sunglasses kind doesn't add `weather:sunshine`.
 - Open: should rain always add the raincoat, even above 60°F?
 - No in-app writes yet (add/edit/delete items, image upload). When added, gate the UI on `session` in `App`; RLS already enforces owner-only.
 - Planned: remove/lock buttons, laying out accessories separately.

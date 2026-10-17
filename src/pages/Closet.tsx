@@ -4,7 +4,8 @@ import type { ClosetItem } from "../types/ClosetItem.ts"
 
 type props = {
     closet: ClosetItem[];
-    setPage: (page: "home" | "closet" | "result") => void;
+    setPage: (page: "home" | "closet" | "result" | "add") => void;
+    signedIn: boolean;
 };
 
 const FILTERS = ["All", "Tops", "Bottoms", "Dresses", "Shoes", "Outerwear", "Accessories"];
@@ -21,7 +22,7 @@ function getCategory(item: ClosetItem): string {
     return "Shoes";
 }
 
-export default function Closet({closet, setPage} : props) {
+export default function Closet({closet, setPage, signedIn} : props) {
     const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
     const [filter, setFilter] = useState("All");
@@ -40,6 +41,7 @@ export default function Closet({closet, setPage} : props) {
                         {f}
                     </button>
                 ))}
+                {signedIn && <button className="filter_btn" onClick={() => setPage("add")}>+ Add item</button>}
             </div>
             <div className="closet_grid">
                 {closet.filter((item) => filter === "All" || getCategory(item) === filter).map((closet_item) => (
