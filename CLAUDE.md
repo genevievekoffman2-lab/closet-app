@@ -30,8 +30,15 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Item images are in the public Storage bucket `item-images`.
 - Schema changes go in a NEW migration file (`supabase migration new <name>`).
   Never edit an existing migration and never change the schema in the dashboard.
-- Row Level Security: public read on all tables. No write policies yet, so writes
-  from the app need a login first (not built yet).
+- Row Level Security: public read on all tables. Writes (insert/update/delete on
+  `items`, `tags`; insert/delete on `item_tags`; upload/delete in `item-images`) are
+  owner-only: `auth.uid()` must equal the one user's id, hardcoded in
+  `20261017202310_add_owner_policies.sql`.
+- Auth: Supabase Auth, email + password. Sign-ups are disabled; the one user was
+  created in the dashboard. Login page is `src/pages/Login.tsx`; `App` holds the
+  session (`getSession` + `onAuthStateChange`) and shows the signed-in email +
+  Sign out in a small corner bar. supabase-js keeps the session in localStorage.
+  Signed-out visitors can still browse everything.
 - The service role key is only for scripts (`scripts/`), loaded from `.env.local`.
   Never use it in frontend code.
 - In the app, tags are still `"key:value"` strings. Convert to and from rows
@@ -39,6 +46,8 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 
 ## Current state
 - The app loads the closet from Supabase: `fetchCloset` in `src/lib/supabase.ts`, called once in `App` and passed down as a `closet` prop (`buildOutfit2` and `fetchOptions` take it as a parameter).
+- `supabase.ts` exports the one `supabase` client; the app uses it for both reads and `supabase.auth`. Don't create a second client.
+- Login works (see Database → Auth), but nothing in the app writes to the database yet. The session is only used by the auth bar.
 - Frontend env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (in `.env.local` and Vercel).
 - `src/data/closetItems.ts` is no longer used by the app; kept until the Supabase switch is confirmed, then it will be removed.
 - `scripts/migrate-closet.ts` was a one-time migration of that file into Supabase.
@@ -80,6 +89,9 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Umbrella (`weather:rain`) is excluded for now.
 
 ## UI
+- Pages (`Page` in `App.tsx`): `home`, `closet`, `result`, `login`. Navigation is `setPage`, no router.
+- Auth bar (`.auth_bar` in `App.css`): fixed top-right on home, closet and result (not on login or the loading/error screens). Signed in: email + Sign out (`supabase.auth.signOut()`). Signed out: Log in → login page.
+- Login page (`Login.tsx`): email + password via `signInWithPassword`; success → Home, failure shows the error; Back button; no sign-up link. It renders before the closet loading check, so login works even if the closet fails to load.
 - Home: clicking the location icon shows a row of buttons for `LOCATIONS` (`weather.ts`: New York City, White Horse). Picking one reloads the weather via `getWeather(location)`; the shown name comes from the returned `Weather`.
 - `OutfitResult.tsx` → `groupOutfit`: flex row. Left: outerwear, bag, other accessories. Middle: 2-col grid of top/bottom (one merged section for dresses). Right: feet.
 - Clicking an item opens a `Carousel` of options from `fetchOptions` (`outfitUtils.ts`): primary = identical `occupies`, accessory = same category, outerwear = any. The carousel index lives in `Section`.
@@ -95,4 +107,5 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Umbrella when raining; `weather:sunshine` (sunglasses) isn't read yet.
 - Tag gaps: plaid/polka-dot and red/blue outfits often get no accessory; Leopard Hat and Cheetah Sneakers use `pattern:animal`, which doesn't match the `Pattern` type (`"animal print"`).
 - Open: should rain always add the raincoat, even above 60°F?
+- No in-app writes yet (add/edit/delete items, image upload). When added, gate the UI on `session` in `App`; RLS already enforces owner-only.
 - Planned: remove/lock buttons, laying out accessories separately.

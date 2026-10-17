@@ -1,9 +1,9 @@
-// Supabase client (anon key, read-only) + loading the closet
+// Supabase client (anon key; writes need the owner to be signed in) + loading the closet
 
 import { createClient } from "@supabase/supabase-js";
 import type { AccessoryCategory, ClosetItem, Slot } from "../types/ClosetItem";
 
-const supabase = createClient(
+export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );

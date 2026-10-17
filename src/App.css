@@ -182,3 +182,15 @@
     border-right-color: var(--border);
   }
 }
+
+.auth_bar {
+  position: fixed;
+  top: 8px;
+  right: 12px;
+  font-size: 13px;
+  color: black;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  z-index: 10;
+}
