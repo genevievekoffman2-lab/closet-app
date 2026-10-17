@@ -80,9 +80,11 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Umbrella (`weather:rain`) is excluded for now.
 
 ## UI
+- Home: clicking the location icon shows a row of buttons for `LOCATIONS` (`weather.ts`: New York City, White Horse). Picking one reloads the weather via `getWeather(location)`; the shown name comes from the returned `Weather`.
 - `OutfitResult.tsx` → `groupOutfit`: flex row. Left: outerwear, bag, other accessories. Middle: 2-col grid of top/bottom (one merged section for dresses). Right: feet.
 - Clicking an item opens a `Carousel` of options from `fetchOptions` (`outfitUtils.ts`): primary = identical `occupies`, accessory = same category, outerwear = any. The carousel index lives in `Section`.
 - ✓ swaps via `setOutfit` (passed from `App`), replacing by object reference, not id. ✕ closes.
+- A flat-lay collage redesign (CSS grid with named areas) was tried and reverted; the flex-row layout above is current.
 - Swaps are user control: they ignore warmth on purpose.
 - Closet page: filter buttons (All/Tops/Bottoms/Dresses/Shoes/Outerwear/Accessories). Category comes from `type` + zones via `getCategory`; tights → Bottoms, socks → Shoes. No category field on items.
 - Item images have backgrounds removed with `rembg`.
@@ -91,6 +93,6 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Carousel options aren't validated yet: filter to swaps that keep zones covered, no slot conflicts, `requires` met (ignore warmth). Plan: same zones as the clicked item, then validity check.
 - Carousel doesn't apply Rain rules.
 - Umbrella when raining; `weather:sunshine` (sunglasses) isn't read yet.
-- Tag gaps: plaid/polka-dot and red/blue outfits often get no accessory; Pearl Earrings and Plaid Mini Skirt are untagged; Leopard Hat's `pattern:leopard` doesn't match the `Pattern` type (`"animal print"`).
+- Tag gaps: plaid/polka-dot and red/blue outfits often get no accessory; Leopard Hat and Cheetah Sneakers use `pattern:animal`, which doesn't match the `Pattern` type (`"animal print"`).
 - Open: should rain always add the raincoat, even above 60°F?
 - Planned: remove/lock buttons, laying out accessories separately.
