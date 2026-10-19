@@ -1,61 +1,51 @@
-/* Claude AI generated the CSS with my instructions 
-
-┌───────────┬──────────┬──────────┐
-│           │   top    │   bag    │
-│ outerwear ├──────────┼──────────┤
-│           │  bottom  │   feet   │
-└───────────┴──────────┴──────────┘
-
-*/ 
+/* Flat-lay collage: items are absolutely positioned by % (see outfitPlacements.ts),
+   so the whole board scales with the container */
 
 .home_btn {
-    position: absolute; 
+    position: absolute;
     left: 10px;
     top: 10px;
     z-index: 10;
     display: flex;
     color:#550000;
-} 
+}
 
-.outfit-box {
-  display:flex;
-  flex-direction: row;  /* Left | Mid | Right*/
-  height: 100vh;
-} 
+.collage {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: min(90vw, 70vh); /* height = 1.25 × width, so this keeps it under ~88vh */
+  margin: 6vh auto 0;
+}
 
-.columnContainer { 
-  flex: 1; /* each section gets equal width */
+.collage img {
+  position: absolute;
+  height: auto;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+/* drop-shadow follows the item's outline (transparent PNG), not its box */
+.collage img:hover {
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.4));
+}
+
+.swap-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
   display: flex;
-  flex-direction: column; /* images will stack vertically */ 
+  align-items: center;
   justify-content: center;
-}
-/* more images in the middle section - make it grid style */
-.columnContainer.middle { 
-  display: grid;
-  grid-template-columns: 1fr 1fr;  /* 2 img per row */ 
-  align-content: center;
+  background: rgba(255, 255, 255, 0.7);
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
+.swap-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.card { 
-  transition: box-shadow 0.2s;
-  border-radius: 20px; 
-  max-height: 40vh; 
-  /* position: relative; position for the label/overlay */
-  /* justify-content: center; imgs aligned center horizontally */
+.card-action {
+  font-size: 24px;
+  cursor: pointer;
 }
-
-.card:hover {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
- 
-.card:hover .card-overlay{
-  opacity: 1;
-}
-

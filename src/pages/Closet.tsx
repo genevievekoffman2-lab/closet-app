@@ -10,7 +10,7 @@ type props = {
 
 const FILTERS = ["All", "Tops", "Bottoms", "Dresses", "Shoes", "Outerwear", "Accessories"];
 
-// category from type + zones (same split as groupOutfit)
+// category from type + zones
 function getCategory(item: ClosetItem): string {
     if (item.type === "outerwear") return "Outerwear";
     if (item.type === "accessory") return "Accessories";
