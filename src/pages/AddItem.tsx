@@ -4,10 +4,11 @@ import './AddItem.css'
 import type { ClosetItem, Slot } from "../types/ClosetItem.ts"
 import { COLORS, PATTERNS, type Color, type Pattern } from "../types/closetItemTags.ts"
 import { ITEM_KINDS, type ItemKind } from "../data/itemKinds.ts"
+import { removeBackground } from "../lib/image_helpers/processImage.ts"
 
 type props = {
     closet: ClosetItem[];
-    setPage: (page: "home") => void;
+    setPage: (page: "home" | "closet") => void;
 };
 
 const WARMTH_STEPS = [
@@ -35,9 +36,12 @@ function guessKind(description: string): ItemKind | undefined {
 const toSlots = (text: string) => text.split(",").map((s) => s.trim()).filter(Boolean) as Slot[];
 
 export default function AddItem({closet, setPage} : props) {
-    const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+    const [photoUrl, setPhotoUrl] = useState<string | null>(null); //for what is displayed
+    const [processedPhoto, setProcessedPhoto] = useState<Blob | null>(null); //for what is upload to DB
+    const [processing, setProcessing] = useState(false);               //loading state for the photo
+
     const [kind, setKind] = useState<ItemKind | null>(null);
-    const [kindPicked, setKindPicked] = useState(false); // user chose a kind, stop guessing
+    const [kindPicked, setKindPicked] = useState(false);  
     const [description, setDescription] = useState("");
     const [colors, setColors] = useState<Color[]>([]);
     const [pattern, setPattern] = useState<Pattern | null>(null);
@@ -65,8 +69,20 @@ export default function AddItem({closet, setPage} : props) {
         if (!kindPicked && guess && guess !== kind) chooseKind(guess);
     }
 
+    async function handlePhoto(file: File) {
+        setProcessing(true);
+        try {
+            const result = await removeBackground(file);
+            if (photoUrl) URL.revokeObjectURL(photoUrl);   // free the old preview
+            setProcessedPhoto(result);
+            setPhotoUrl(URL.createObjectURL(result));
+        } finally {
+            setProcessing(false);
+        }
+    }
+
     function choosePhoto(file: File | undefined) {
-        if (file) setPhotoUrl(URL.createObjectURL(file));
+        if (file) handlePhoto(file);
     }
 
     function toggle<T>(list: T[], value: T): T[] {
@@ -75,6 +91,11 @@ export default function AddItem({closet, setPage} : props) {
 
     function submit(e: React.FormEvent) {
         e.preventDefault();
+        collect_form_data();
+    }
+
+    // all data we need from form to create a new item in database
+    function collect_form_data() {
         if (!kind) return;
         const tags = [
             ...colors.map((c) => `color:${c}`),
@@ -88,7 +109,9 @@ export default function AddItem({closet, setPage} : props) {
             kind.type === "primary" ? { ...base, type: "primary", occupies: toSlots(occupies), requires: toSlots(requires) }
             : kind.type === "accessory" ? { ...base, type: "accessory", category: kind.category! }
             : { ...base, type: "outerwear" };
-        console.log({ ...item, kind: kind.id });
+        
+        console.log(JSON.stringify({ ...item, kind: kind.id }, null, 2));
+        console.log(processedPhoto);
     }
 
     return (
@@ -98,10 +121,12 @@ export default function AddItem({closet, setPage} : props) {
                 setPage("home")
             }}> home </a>
             <p className="title"> Create Item </p>
+            <button className="add_btn" onClick={() => setPage("closet")} aria-label="Cancel">✕</button>
 
             <form className="add_form" onSubmit={submit}>
                 <section>
                     <h3>Photo</h3>
+                    {processing && <p>Removing background…</p>}
                     {photoUrl && <img className="add_preview" src={photoUrl} alt="preview" />}
                     <div className="add_chips">
                         <label className="filter_btn">Take photo

@@ -41,8 +41,8 @@ export default function Closet({closet, setPage, signedIn} : props) {
                         {f}
                     </button>
                 ))}
-                {signedIn && <button className="filter_btn" onClick={() => setPage("add")}>+ Add item</button>}
             </div>
+            {signedIn && <button className="add_btn" onClick={() => setPage("add")} aria-label="Add item">+</button>}
             <div className="closet_grid">
                 {closet.filter((item) => filter === "All" || getCategory(item) === filter).map((closet_item) => (
                     <div key={closet_item.id} className="closet_box" onClick={() => {
