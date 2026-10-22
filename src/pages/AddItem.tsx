@@ -5,10 +5,12 @@ import type { ClosetItem, Slot } from "../types/ClosetItem.ts"
 import { COLORS, PATTERNS, type Color, type Pattern } from "../types/closetItemTags.ts"
 import { ITEM_KINDS, type ItemKind } from "../data/itemKinds.ts"
 import { removeBackground } from "../lib/image_helpers/processImage.ts"
+import { createItem } from "../api/items.ts"
 
 type props = {
     closet: ClosetItem[];
     setPage: (page: "home" | "closet") => void;
+    onSaved: (item: ClosetItem) => void;
 };
 
 const WARMTH_STEPS = [
@@ -35,7 +37,7 @@ function guessKind(description: string): ItemKind | undefined {
 
 const toSlots = (text: string) => text.split(",").map((s) => s.trim()).filter(Boolean) as Slot[];
 
-export default function AddItem({closet, setPage} : props) {
+export default function AddItem({closet, setPage, onSaved} : props) {
     const [photoUrl, setPhotoUrl] = useState<string | null>(null); //for what is displayed
     const [processedPhoto, setProcessedPhoto] = useState<Blob | null>(null); //for what is upload to DB
     const [processing, setProcessing] = useState(false);               //loading state for the photo
@@ -53,6 +55,8 @@ export default function AddItem({closet, setPage} : props) {
     const [occupies, setOccupies] = useState("");
     const [requires, setRequires] = useState("");
     const [showAdvanced, setShowAdvanced] = useState(false);
+    const [saving, setSaving] = useState(false); //while uploading item to DB
+
 
     const brands = [...new Set(closet.flatMap((i) => i.tags ?? []).filter((t) => t.startsWith("brand:")).map((t) => t.slice(6)))];
 
@@ -71,11 +75,16 @@ export default function AddItem({closet, setPage} : props) {
 
     async function handlePhoto(file: File) {
         setProcessing(true);
+        if (photoUrl) URL.revokeObjectURL(photoUrl);   // free the old preview
+        setPhotoUrl(null);
+        setProcessedPhoto(null);   // old photo can't be saved by mistake
         try {
             const result = await removeBackground(file);
-            if (photoUrl) URL.revokeObjectURL(photoUrl);   // free the old preview
             setProcessedPhoto(result);
             setPhotoUrl(URL.createObjectURL(result));
+        } catch (err) {
+            console.error(err);
+            alert("Couldn't process that photo, try another");
         } finally {
             setProcessing(false);
         }
@@ -89,14 +98,28 @@ export default function AddItem({closet, setPage} : props) {
         return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
     }
 
-    function submit(e: React.FormEvent) {
-        e.preventDefault();
-        collect_form_data();
+    async function submit(e: React.FormEvent) {
+        e.preventDefault(); 
+        if (saving || processing) return; //can't save again while one is in progress
+        
+        try {
+            const item = collect_form_data();
+            if (!kind || !processedPhoto || !item) return;
+            setSaving(true); 
+            const saved = await createItem(item, kind.id, processedPhoto);
+            onSaved(saved);
+        } catch (err) {
+            console.error(err);
+            alert(err instanceof Error ? err.message : "Couldn't save the item");
+        } finally {
+            setSaving(false);
+        }
+        
     }
 
     // all data we need from form to create a new item in database
-    function collect_form_data() {
-        if (!kind) return;
+    function collect_form_data(): ClosetItem | null {
+        if (!kind) return null;
         const tags = [
             ...colors.map((c) => `color:${c}`),
             ...(pattern ? [`pattern:${pattern}`] : []),
@@ -109,9 +132,9 @@ export default function AddItem({closet, setPage} : props) {
             kind.type === "primary" ? { ...base, type: "primary", occupies: toSlots(occupies), requires: toSlots(requires) }
             : kind.type === "accessory" ? { ...base, type: "accessory", category: kind.category! }
             : { ...base, type: "outerwear" };
-        
-        console.log(JSON.stringify({ ...item, kind: kind.id }, null, 2));
-        console.log(processedPhoto);
+            
+        console.log(  JSON.stringify({ ...item, kind: kind.id }, null, 2) );
+        return item;
     }
 
     return (
@@ -234,7 +257,9 @@ export default function AddItem({closet, setPage} : props) {
                     </section>
                 )}
 
-                <button type="submit" className="filter_btn active add_submit" disabled={!kind}>Add item</button>
+                <button type="submit" className="filter_btn active add_submit" disabled={!kind || !processedPhoto || saving || processing}>
+                    {saving ? "Saving…" : "Add item"}
+                </button>
             </form>
         </div>
     )

@@ -48,7 +48,8 @@ function App() {
   return (
     <>
       {authBar}
-      {page == "add" && session ? <AddItem closet={closet} setPage={setPage} />
+      {page == "add" && session ? <AddItem closet={closet} setPage={setPage}
+          onSaved={(item) => { setCloset([...closet, item]); setPage("closet"); }} />
         : page == "closet" ? <Closet closet={closet} setPage={setPage} signedIn={!!session} />
         : page == "result" && outfit ? <OutfitResult closet={closet} outfit={outfit} setOutfit={setOutfit} setPage={setPage}/>
         : <Home closet={closet} setPage={setPage} setOutfit={setOutfit} />}

@@ -27,16 +27,18 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Closet data lives in Supabase. Schema is in `supabase/migrations/`.
 - Tables:
   - `items`: id (uuid), type, description, image_url, warmth (real), waterproof,
-    occupies (text[]), requires (text[]), category (accessories only, required for them)
+    occupies (text[]), requires (text[]), category (accessories only, required for them),
+    kind (text, the `ITEM_KINDS` id; nullable, added in `20261022105537_add_kind_to_items.sql`)
   - `tags`: id, key, value; unique (key, value). Stored lowercase.
   - `item_tags`: join table (item_id, tag_id), cascade delete on both.
 - Item images are in the public Storage bucket `item-images`.
 - Schema changes go in a NEW migration file (`supabase migration new <name>`).
   Never edit an existing migration and never change the schema in the dashboard.
 - Row Level Security: public read on all tables. Writes (insert/update/delete on
-  `items`, `tags`; insert/delete on `item_tags`; upload/delete in `item-images`) are
+  `items`, `tags`; insert/delete on `item_tags`; upload/select/delete in `item-images`) are
   owner-only: `auth.uid()` must equal the one user's id, hardcoded in
-  `20261017202310_add_owner_policies.sql`.
+  `20261017202310_add_owner_policies.sql` (storage select in `20261022112124_storage_owner_select.sql`;
+  `remove()` needs select + delete).
 - Auth: Supabase Auth, email + password. Sign-ups are disabled; the one user was
   created in the dashboard. Login page is `src/pages/Login.tsx`; `App` holds the
   session (`getSession` + `onAuthStateChange`) and shows the signed-in email +
@@ -50,7 +52,7 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 ## Current state
 - The app loads the closet from Supabase: `fetchCloset` in `src/lib/supabase.ts`, called once in `App` and passed down as a `closet` prop (`buildOutfit2` and `fetchOptions` take it as a parameter).
 - `supabase.ts` exports the one `supabase` client; the app uses it for both reads and `supabase.auth`. Don't create a second client.
-- Login works (see Database → Auth), but nothing in the app writes to the database yet. The session is only used by the auth bar.
+- Login works (see Database → Auth). The only in-app write is Add item → `createItem` in `src/api/items.ts`: uploads the photo to `item-images`, inserts the `items` row, upserts each tag and links it in `item_tags`. On failure it deletes the item (links cascade), then the image, and rethrows. Not atomic (no RPC); cleanup failures are only logged. Newly created tags aren't rolled back.
 - Frontend env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (in `.env.local` and Vercel).
 - `src/data/closetItems.ts` is no longer used by the app; kept until the Supabase switch is confirmed, then it will be removed.
 - `scripts/migrate-closet.ts` was a one-time migration of that file into Supabase.
@@ -95,7 +97,7 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - Pages (`Page` in `App.tsx`): `home`, `closet`, `result`, `login`, `add`. Navigation is `setPage`, no router.
 - Auth bar (`.auth_bar` in `App.css`): fixed top-right on home, closet and result (not on login or the loading/error screens). Signed in: email + Sign out (`supabase.auth.signOut()`). Signed out: Log in → login page.
 - Login page (`Login.tsx`): email + password via `signInWithPassword`; success → Home, failure shows the error; Back button; no sign-up link. It renders before the closet loading check, so login works even if the closet fails to load.
-- Add item page (`AddItem.tsx`): reached from a round "+" button (`.add_btn` in `Closet.css`) fixed to the bottom-right of the Closet page, above everything (z-index 1000), signed in only. Page itself also gated (`page == "add" && session`). A round ✕ button (same `.add_btn` style, bottom-right) cancels back to Closet. UI only: submit `console.log`s a `ClosetItem` (id `""`, image_url = local preview URL) plus `kind`; nothing is saved yet.
+- Add item page (`AddItem.tsx`): reached from a round "+" button (`.add_btn` in `Closet.css`) fixed to the bottom-right of the Closet page, above everything (z-index 1000), signed in only. Page itself also gated (`page == "add" && session`). A round ✕ button (same `.add_btn` style, bottom-right) cancels back to Closet. Submit: `collect_form_data` builds a `ClosetItem`, then `createItem(item, kind.id, processedPhoto)` saves it; on success `onSaved` adds it to `closet` in `App` and goes to Closet. The button is disabled with no kind/photo, while saving, or while the background is being removed. A photo is required. Picking a photo runs `removeBackground` (`src/lib/image_helpers/processImage.ts`, `@imgly/background-removal`) in the browser; `processedPhoto` is what gets uploaded.
   - Fields in order: photo (camera / library + preview), kind, description, colors (name shows on hover via CSS `::after`), pattern, details (warmth steps, waterproof, "Only wear in rain" → `weather:rain`, materials, brand with autocomplete from existing `brand:` tags), Advanced (raw occupies/requires, primary kinds only).
   - Kinds come from `ITEM_KINDS` in `src/data/itemKinds.ts`: each sets type, occupies, requires, category, default warmth, and `keywords`. The last description word that's a keyword preselects the kind ("Sweater Vest" → vest) until the user picks one.
   - Dress kind shows "Can you wear a top underneath?" (default no), which switches `top:1` ↔ `top:2`.
@@ -108,14 +110,14 @@ Outfit picker: given the weather (temperature, precipitation, humidity, wind), c
 - A flat-lay collage redesign (CSS grid with named areas) was tried and reverted; the flex-row layout above is current.
 - Swaps are user control: they ignore warmth on purpose.
 - Closet page: filter buttons (All/Tops/Bottoms/Dresses/Shoes/Outerwear/Accessories). Category comes from `type` + zones via `getCategory`; tights → Bottoms, socks → Shoes. No category field on items.
-- Item images have backgrounds removed with `rembg`.
+- Item images have backgrounds removed: older ones with `rembg`, new ones in the Add item form with `@imgly/background-removal`.
 
 ## Known gaps / next up
 - Carousel options aren't validated yet: filter to swaps that keep zones covered, no slot conflicts, `requires` met (ignore warmth). Plan: same zones as the clicked item, then validity check.
 - Carousel doesn't apply Rain rules.
 - Umbrella when raining; `weather:sunshine` (sunglasses) isn't read yet.
 - Tag gaps: plaid/polka-dot and red/blue outfits often get no accessory.
-- Add item: save to Supabase (upload photo to `item-images`, insert item + tags). No `waist` kind yet; sunglasses kind doesn't add `weather:sunshine`.
+- Add item: no `waist` kind yet; sunglasses kind doesn't add `weather:sunshine`.
 - Open: should rain always add the raincoat, even above 60°F?
-- No in-app writes yet (add/edit/delete items, image upload). When added, gate the UI on `session` in `App`; RLS already enforces owner-only.
+- No edit/delete items in the app yet. When added, gate the UI on `session` in `App`; RLS already enforces owner-only.
 - Planned: remove/lock buttons, laying out accessories separately.
